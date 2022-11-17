@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
-import { PulseLoader, PuffLoader } from "react-spinners";
+import { PulseLoader } from "react-spinners";
 
 import "./Bridge.css";
 import iconBridge from "../../assets/svg/grantsville/bridge-main-icon.svg";

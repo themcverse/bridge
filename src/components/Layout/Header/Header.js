@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from "react";
 import { Fade } from "react-awesome-reveal";
-import { formatEther } from "ethers/lib/utils";
+// import { formatEther } from "ethers/lib/utils";
 
 import "./Header.css";
 import {
   svgBorderTM,
-  logoAvax,
+  // logoAvax,
   headerTitle,
   headerTitleBg,
 } from "../../../utils/helper/image.helper";
@@ -13,10 +13,10 @@ import {
 import headerTitleBg2 from "../../../assets/svg/header-title-bg-2.svg";
 import headerTitleBorder2 from "../../../assets/svg/header-title-border-2.svg";
 import headerCityLogo from "../../../assets/image/header-avax-hills-logo.png";
-import cityAvalancheHillsLogo from "../../../assets/image/avax-hills-circle-logo-white.png";
-import cityGrantsvilleLogo from "../../../assets/image/grantsville-select-logo.png";
-import iconArrowUpRed from "../../../assets/svg/icon-arrow-up-red.svg";
-import iconArrowUpYellow from "../../../assets/svg/icon-arrow-up-yellow.svg";
+// import cityAvalancheHillsLogo from "../../../assets/image/avax-hills-circle-logo-white.png";
+// import cityGrantsvilleLogo from "../../../assets/image/grantsville-select-logo.png";
+// import iconArrowUpRed from "../../../assets/svg/icon-arrow-up-red.svg";
+// import iconArrowUpYellow from "../../../assets/svg/icon-arrow-up-yellow.svg";
 import logo from "../../../assets/image/logo.png";
 
 import grantsBorderTM from "../../../assets/svg/grantsville/border-tm.svg";
@@ -24,10 +24,10 @@ import grantsHeaderTitleBg from "../../../assets/svg/grantsville/header-title-bg
 import grantsHeaderTitleBorder from "../../../assets/svg/grantsville/header-title-border.svg";
 import grantsHeaderCityLogo from "../../../assets/image/grantsville/grantsville-city-logo.png";
 
-const brandNames = {
-  light: "avalanche hills",
-  dark: "grantsville",
-};
+// const brandNames = {
+//   light: "avalanche hills",
+//   dark: "grantsville",
+// };
 const cityLogos = {
   light: headerCityLogo,
   dark: grantsHeaderCityLogo,

@@ -2,15 +2,15 @@ import React from "react";
 
 import "./Login.css";
 import {
-  frame,
-  frameBorder,
-  footer,
+  // frame,
+  // frameBorder,
+  // footer,
   svgBorderBL,
   svgBorderBR,
   socialDiscord,
   socialInstagram,
   socialTwitter,
-  svgBorderTM,
+  // svgBorderTM,
   headerTitleBg,
   headerTitle,
   mainLogo,
