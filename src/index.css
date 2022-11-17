@@ -1,0 +1,221 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+/* Designing for scroll-bar */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  width: 1px;
+  background: #eaa3a4;
+  opacity: 0.58;
+  border: 0.5px solid #eaa3a4;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  width: 6px;
+  background: #b91414;
+  border-radius: 37px;
+  border: 0.5px solid #ff0000;
+  box-shadow: 0px 0px 4px #ff3333;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ff0000;
+}
+
+/* Grantsville Hover */
+.grantsville *::-webkit-scrollbar-thumb:hover {
+  background: #0080ff;
+}
+
+.grantsville *::-webkit-scrollbar-track {
+  width: 1px;
+  background: #a3dcea;
+  opacity: 0.58;
+  border: 0.5px solid #a3dcea;
+}
+
+.grantsville *::-webkit-scrollbar-thumb {
+  width: 6px;
+  background: #1498b9;
+  border-radius: 37px;
+  border: 0.5px solid #0080ff;
+  box-shadow: 0px 0px 4px #33d4ff;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  width: 10px;
+}
+
+.main {
+  background-image: url(assets/image/main.png);
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.main.grantsville {
+  background-image: url(assets/image/grantsville/main.png);
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.main-mobile {
+  background-image: url(assets/image/main-mobile.png);
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.main-mobile.mygarage {
+  background-image: url(assets/image/garage.png);
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.main.mygarage {
+  background-image: url(assets/image/garage.png);
+}
+
+.particle {
+  background-image: url(assets/image/particle.png);
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.particle-radial {
+  background: radial-gradient(
+    40.57% 72.09% at 50% 50%,
+    rgba(7, 38, 55, 0.0001) 0%,
+    #072637 100%
+  );
+  height: 100%;
+  mix-blend-mode: soft-light;
+}
+
+.callout-bg {
+  background-image: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' viewBox='0 0 1538 727' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1532 38V38C1535.31 38 1538 40.6863 1538 44V626C1538 629.314 1535.31 632 1532 632V632V38Z' fill='white'/%3E%3Cpath d='M1532 632H1315.25C1295.04 632 1275.55 639.516 1260.57 653.088L1203.37 704.912C1188.39 718.484 1168.9 726 1148.68 726H512.585C496.196 726 480.47 719.525 468.833 707.985L441.637 681.015C430 669.475 414.275 663 397.886 663H37.8091C17.48 663 1 646.52 1 626.191V97.1C1 84.248 6.19092 71.942 15.396 62.973L65.123 14.521C74.021 5.85201 85.9519 1 98.375 1L1314.22 1C1323.96 1 1333.27 4.95 1340.04 11.946L1353.69 26.054C1360.45 33.05 1369.77 37 1379.5 37H1532V632Z' stroke='%23707070'/%3E%3Cg style='mix-blend-mode:screen' opacity='0.3'%3E%3Cpath d='M1532 633H1315.25C1295.04 633 1275.55 640.516 1260.57 654.088L1203.37 705.912C1188.39 719.484 1168.9 727 1148.68 727H512.585C496.196 727 480.47 720.525 468.833 708.985L441.637 682.015C430 670.475 414.275 664 397.886 664H37.8091C17.48 664 1 647.52 1 627.191V98.1C1 85.248 6.19092 72.942 15.396 63.973L65.123 15.521C74.021 6.85201 85.9519 2 98.375 2L1315.25 2C1324.99 2 1334.3 5.95 1341.07 12.946L1354.71 27.054C1361.48 34.05 1370.8 38 1380.53 38H1532V633Z' fill='url(%23paint0_linear_0_1)' style='mix-blend-mode:overlay'/%3E%3C/g%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_0_1' x1='1' y1='667' x2='1532' y2='667' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23072637'/%3E%3Cstop offset='0.728521' stop-color='%23ED1E24'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.grantsville .callout-bg {
+  background-image: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' viewBox='0 0 1538 666' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1531.5 36.5c3.31 0 6 2.686 6 6v523c0 3.314-2.69 6-6 6v-535Z' fill='%2355C3FF'/%3E%3Cpath d='M1531.5 571.5h-216.75a81.44 81.44 0 0 0-54.68 21.088l-57.2 51.824a81.447 81.447 0 0 1-54.69 21.088H512.085a62.136 62.136 0 0 1-43.752-18.015l-27.196-26.97a62.134 62.134 0 0 0-43.751-18.015H37.309C16.98 602.5.5 586.02.5 565.691V96.6a47.647 47.647 0 0 1 14.396-34.127l49.727-48.452A47.65 47.65 0 0 1 97.875.5H1247.26c9.74 0 19.05 3.95 25.82 10.946l13.64 14.108a35.935 35.935 0 0 0 25.82 10.946h218.96v535Z' stroke='%23ffffff'/%3E%3Cpath d='M1531.5 571.5h-216.75a81.44 81.44 0 0 0-54.68 21.088l-57.2 51.824a81.447 81.447 0 0 1-54.69 21.088H512.085a62.136 62.136 0 0 1-43.752-18.015l-27.196-26.97a62.134 62.134 0 0 0-43.751-18.015H37.309C16.98 602.5.5 586.02.5 565.691V96.6a47.647 47.647 0 0 1 14.396-34.127l49.727-48.452A47.65 47.65 0 0 1 97.875.5H1247.26c9.74 0 19.05 3.95 25.82 10.946l13.64 14.108a35.935 35.935 0 0 0 25.82 10.946h218.96v535Z' fill='url(%23a)' style='mix-blend-mode:soft-light'/%3E%3Cg style='mix-blend-mode:screen' opacity='.3'%3E%3Cpath d='M1531.5 571.5h-216.75a81.44 81.44 0 0 0-54.68 21.088l-57.2 51.824a81.447 81.447 0 0 1-54.69 21.088H512.085a62.136 62.136 0 0 1-43.752-18.015l-27.196-26.97a62.134 62.134 0 0 0-43.751-18.015H37.309C16.98 602.5.5 586.02.5 565.691V96.6a47.647 47.647 0 0 1 14.396-34.127l49.727-48.452A47.65 47.65 0 0 1 97.875.5H1247.26c9.74 0 19.05 3.95 25.82 10.946l13.64 14.108a35.935 35.935 0 0 0 25.82 10.946h218.96v535Z' fill='url(%23b)' style='mix-blend-mode:overlay'/%3E%3C/g%3E%3Cdefs%3E%3ClinearGradient id='a' x1='.5' y1='665.5' x2='1531.5' y2='665.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23072637' stop-opacity='.01'/%3E%3Cstop offset='.729' stop-color='%2355C3FF'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='.5' y1='665.5' x2='1531.5' y2='665.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23072637' stop-opacity='.01'/%3E%3Cstop offset='.729' stop-color='%2355C3FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
+  /* background-image: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' viewBox='0 0 1538 666' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1531.5 36.5V36.5C1534.81 36.5 1537.5 39.1863 1537.5 42.5V565.5C1537.5 568.814 1534.81 571.5 1531.5 571.5V571.5V36.5Z' fill='%2355C3FF'/%3E%3Cpath d='M1531.5 571.5H1314.75C1294.54 571.5 1275.05 579.016 1260.07 592.588L1202.87 644.412C1187.89 657.984 1168.4 665.5 1148.18 665.5H512.085C495.696 665.5 479.97 659.025 468.333 647.485L441.137 620.515C429.5 608.975 413.775 602.5 397.386 602.5H37.3091C16.98 602.5 0.5 586.02 0.5 565.691V96.6C0.5 83.7481 5.69092 71.442 14.896 62.473L64.623 14.021C73.521 5.35205 85.4519 0.5 97.875 0.5H1247.26C1257 0.5 1266.31 4.44995 1273.08 11.446L1286.72 25.5539C1293.49 32.55 1302.81 36.5 1312.54 36.5H1531.5V571.5Z' stroke='%23707070'/%3E%3Cg style='mix-blend-mode:soft-light'%3E%3Cpath d='M1531.5 571.5H1314.75C1294.54 571.5 1275.05 579.016 1260.07 592.588L1202.87 644.412C1187.89 657.984 1168.4 665.5 1148.18 665.5H512.085C495.696 665.5 479.97 659.025 468.333 647.485L441.137 620.515C429.5 608.975 413.775 602.5 397.386 602.5H37.3091C16.98 602.5 0.5 586.02 0.5 565.691V96.6C0.5 83.7481 5.69092 71.442 14.896 62.473L64.623 14.021C73.521 5.35205 85.4519 0.5 97.875 0.5H1247.26C1257 0.5 1266.31 4.44995 1273.08 11.446L1286.72 25.5539C1293.49 32.55 1302.81 36.5 1312.54 36.5H1531.5V571.5Z' fill='url(%23paint0_linear_350_6)'/%3E%3C/g%3E%3Cg style='mix-blend-mode:soft-light'%3E%3Cpath d='M1531.5 571.5H1314.75C1294.54 571.5 1275.05 579.016 1260.07 592.588L1202.87 644.412C1187.89 657.984 1168.4 665.5 1148.18 665.5H512.085C495.696 665.5 479.97 659.025 468.333 647.485L441.137 620.515C429.5 608.975 413.775 602.5 397.386 602.5H37.3091C16.98 602.5 0.5 586.02 0.5 565.691V96.6C0.5 83.7481 5.69092 71.442 14.896 62.473L64.623 14.021C73.521 5.35205 85.4519 0.5 97.875 0.5H1247.26C1257 0.5 1266.31 4.44995 1273.08 11.446L1286.72 25.5539C1293.49 32.55 1302.81 36.5 1312.54 36.5H1531.5V571.5Z' fill='url(%23paint1_linear_350_6)'/%3E%3C/g%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_350_6' x1='0.5' y1='665.5' x2='1531.5' y2='665.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23072637' stop-opacity='0.01'/%3E%3Cstop offset='0.728903' stop-color='%2355C3FF'/%3E%3C/linearGradient%3E%3ClinearGradient id='paint1_linear_350_6' x1='0.5' y1='665.5' x2='1531.5' y2='665.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23072637' stop-opacity='0.01'/%3E%3Cstop offset='0.728903' stop-color='%2355C3FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A"); */
+  background-repeat: no-repeat no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.dealership-body-border {
+  background-image: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' viewBox='0 0 1461 499' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath opacity='0.58' d='M1 68.5H551.169C565.958 68.5 579.988 61.9534 589.488 50.6199L616.812 18.0224C626.122 6.91563 639.871 0.5 654.364 0.5H1438C1450.15 0.5 1460 10.3497 1460 22.5V498' stroke='url(%23paint0_linear_89_3633)' stroke-width='0.5' stroke-linecap='round'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_89_3633' x1='233' y1='167.5' x2='1324' y2='170' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23EC2227'/%3E%3Cstop offset='1' stop-color='%23FF5757' stop-opacity='0.839216'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.grantsville .dealership-body-border {
+  background-image: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' viewBox='0 0 1461 499' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath opacity='0.58' d='M1 69H551.169C565.958 69 579.988 62.4534 589.488 51.1199L616.812 18.5224C626.122 7.41563 639.871 1 654.364 1L1225.5 1C1237.65 1 1247.5 10.8497 1247.5 23V538.5' stroke='url(%23paint0_linear_104_3)' stroke-width='0.5' stroke-linecap='round'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_104_3' x1='233' y1='168' x2='1324' y2='170.5' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%230080FF'/%3E%3Cstop offset='1' stop-color='%2332ABFC' stop-opacity='0.839216'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.dealership-body-right {
+  background-image: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' viewBox='0 0 570 510' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M569.5 0.5H131.185C113.933 0.5 97.5458 8.05079 86.3364 21.1647L10.3543 110.056C4.3172 117.119 1 126.105 1 135.397L1 510' stroke='url(%23paint0_linear_102_273)'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_102_273' x1='4.00001' y1='78' x2='252' y2='363' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FF0000'/%3E%3Cstop offset='1' stop-color='%23FF0000' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat no-repeat;
+  background-position: left top;
+  background-size: 60% 95%;
+}
+
+.grantsville .dealership-body-right {
+  background-image: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' viewBox='0 0 570 510' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M569.5.5H131.185a59 59 0 0 0-44.849 20.665l-75.982 88.891A39 39 0 0 0 1 135.397V510' stroke='url(%23a)'/%3E%3Cdefs%3E%3ClinearGradient id='a' x1='4' y1='78' x2='252' y2='363' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%2333D4FF'/%3E%3Cstop offset='1' stop-color='%2333D4FF' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
+  background-repeat: no-repeat no-repeat;
+  background-position: left top;
+  background-size: 60% 95%;
+}
+
+.custom-text-shadow:before {
+  content: attr(datatitle);
+  z-index: 1;
+  color: #fff;
+  font-weight: 100;
+  display: block;
+  position: absolute;
+  top: 2px;
+  right: 0;
+  bottom: 0;
+  left: 2px;
+}
+
+.gradient-text {
+  font-family: "Kanit", sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  /* font-size: 60px; */
+  line-height: 125%;
+  text-align: center;
+  letter-spacing: 1.56px;
+  background: linear-gradient(180deg, #ff0000 0%, #000000 100%);
+  background-clip: text;
+  -webkit-text-stroke: 1px #ff0000;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+
+  padding: 12px;
+}
+
+.bg-mint-button {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 0, 0, 0.54) 0.71%,
+    rgba(255, 0, 0, 0) 79.06%
+  );
+}
+
+.bg-mint-button:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 0, 0, 0) 0.71%,
+    rgba(255, 0, 0, 0.54) 79.06%
+  );
+}
+
+.grantsville .bg-mint-button {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 128, 255, 0.54) 0.71%,
+    rgba(255, 0, 0, 0) 79.06%
+  );
+}
+
+.grantsville .bg-mint-button:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 0, 0, 0) 0.71%,
+    rgba(0, 128, 255, 0.54) 79.06%
+  );
+}
