@@ -238,7 +238,7 @@ const Bridge = ({ account }) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                   <img src={iconLockedHville} alt="hville" />
                   <div className="font-raleway text-white">
                     <div className="text-xs tracking-widest">LOCKED HVILLE</div>
@@ -246,7 +246,7 @@ const Bridge = ({ account }) => {
                       {(+lockedHville).toLocaleString()}
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[25vh] xl:max-h-[30vh] overflow-y-auto">
                 {wenlamboIds.map((id) => (
@@ -313,7 +313,7 @@ const Bridge = ({ account }) => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    {/* <div className="flex items-center gap-2">
                       <img src={iconLockedHville} alt="hville" />
                       <div className="font-raleway text-white">
                         <div className="text-xs tracking-widest">
@@ -323,7 +323,7 @@ const Bridge = ({ account }) => {
                           {(+avaxLockedHville).toLocaleString()}
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[25vh] xl:max-h-[30vh] overflow-y-auto">
                     {avaxLamboIds.map((id) => (
