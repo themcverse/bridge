@@ -605,9 +605,9 @@
             "type": "tuple"
           }
         ],
-        "internalType": "struct Bridge.Bridging",
-        "name": "bridging",
-        "type": "tuple"
+        "internalType": "struct Bridge.Bridging[]",
+        "name": "bridgings",
+        "type": "tuple[]"
       }
     ],
     "name": "queue",
