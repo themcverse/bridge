@@ -127,7 +127,7 @@ const Footer = ({ menu, theme }) => {
             connected
           </div>
           <div className="text-[#9E9E9E] text-[8px] tracking-wider">
-            avalanche network
+            harmony network
           </div>
         </div>
       </div>

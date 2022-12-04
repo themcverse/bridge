@@ -206,7 +206,7 @@ const Login = ({ connectWallet }) => {
               connect wallet
             </div>
             <div className="w-3/5 text-sm text-[#E85858] tracking-[1.5px] mx-auto mb-10">
-              make sure you connect your metamask to the avalanche network
+              make sure you connect your metamask to the harmony network
             </div>
           </div>
         </div>

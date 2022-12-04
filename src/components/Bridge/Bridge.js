@@ -25,10 +25,7 @@ import wenlamboABI from "../../contracts/abis/Wenlambo/Wenlambo.json";
 import wenlamboGarageABI from "../../contracts/abis/Wenlambo/Garage.json";
 
 const Bridge = ({ account }) => {
-  const [asset, setAsset] = useState("");
   const [isBridging, setIsBridging] = useState(false);
-  // const [isLamboBridged, setIsLamboBridged] = useState(false);
-  const [isHvilleBridged, setIsHvilleBridged] = useState(false);
 
   const [bridgeContract, setBridgeContract] = useState(null);
   const [wenlamboContract, setWenlamboContract] = useState(null);
@@ -41,43 +38,31 @@ const Bridge = ({ account }) => {
   const [avaxLamboIds, setAvaxLamboIds] = useState([]);
   const [avaxLockedHville, setAvaxLockedHville] = useState(0);
 
-  const handleBridgeAll = async (assetType) => {
+  const handleBridgeAll = async () => {
     try {
       if (isBridging) return;
       setIsBridging(true);
-      if (assetType === "all") {
-        const isApproved = await wenlamboContract.isApprovedForAll(
-          account,
-          bridgeAddress
+      const isApproved = await wenlamboContract.isApprovedForAll(
+        account,
+        bridgeAddress
+      );
+      console.log(isApproved);
+      if (!isApproved) {
+        const txApproval = await wenlamboContract.setApprovalForAll(
+          bridgeAddress,
+          true
         );
-        console.log(isApproved);
-        if (!isApproved) {
-          const txApproval = await wenlamboContract.setApprovalForAll(
-            bridgeAddress,
-            true
-          );
-          await txApproval.wait();
-        }
+        await txApproval.wait();
+      }
 
-        const tx = await bridgeContract.queue([
-          [wenlamboAddress, wenlamboIds[0]],
-          ["fuji", account],
-        ]);
-        console.log(tx);
-        const result = await tx.wait();
-        console.log(result);
-        getWenlamboAssets(
-          wenlamboContract,
-          wenlamboGarageContract,
-          avaxContract
-        );
-      }
-      if (assetType === "hville") {
-        // setTimeout(() => {
-        //   setIsHvilleBridged(true);
-        //   setIsBridging(false);
-        // }, 3000);
-      }
+      const tx = await bridgeContract.queue([
+        [wenlamboAddress, wenlamboIds[0]],
+        ["fuji", account],
+      ]);
+      console.log(tx);
+      const result = await tx.wait();
+      console.log(result);
+      getWenlamboAssets(wenlamboContract, wenlamboGarageContract, avaxContract);
       setIsBridging(false);
     } catch (error) {
       setIsBridging(false);
@@ -176,120 +161,49 @@ const Bridge = ({ account }) => {
 
   return (
     <div className="absolute left-[10%] top-[12%] w-[74vw] h-[68vh]">
-      <div className="w-full grid grid-cols-2 gap-4">
-        <div className="">
-          <div className="bg-[#072637] bg-opacity-50 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] p-4 flex items-center gap-2">
-            <img src={iconBridge} alt="" />
-            {/* <button
+      <div className="md:w-3/4 lg:w-2/3 2xl:w-1/2 mx-auto">
+        <div className="bg-[#072637] bg-opacity-50 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] p-4 flex items-center gap-2">
+          <img src={iconBridge} alt="" />
+          {/* <button
               className="text-white border border-white bg-cyan-600"
               onClick={() => test()}
             >
               CLICK
             </button> */}
-            <div className="text-sm font-raleway font-semibold tracking-[1px] px-2">
-              <div className="text-[#FFD900]">
-                WenLamboNFTs and $HVILLE are migrating from Harmony to the
-                Avalanche Network.
-              </div>
-              <div className="text-white mt-2">
-                Please bridge your NFTs and $HVILLE from Harmony to Avalanche.
-                You should be on the Harmony network to bridge your NFTs to
-                Avalanche.
-              </div>
+          <div className="text-sm font-raleway font-semibold tracking-[1px] px-2">
+            <div className="text-[#FFD900]">
+              WenLamboNFTs and $HVILLE are migrating from Harmony to the
+              Avalanche Network.
             </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-2">
-          <div className="flex items-center">
-            <div
-              className={`${
-                asset === "all"
-                  ? "bg-[rgba(255,217,0,0.22)] border-[3px] border-[#FFD900]"
-                  : "bg-[rgba(255,255,255,0.22)]"
-              } rounded-full flex items-center justify-center w-20 h-20 cursor-pointer`}
-              style={{ flex: "0 0 80px" }}
-              onClick={() => setAsset("all")}
-            >
-              <img
-                src={logoLambo}
-                alt="wenlambo"
-                loading="lazy"
-                className="w-14 h-14"
-              />
-            </div>
-            <div
-              className={`grow text-[11px] ${
-                asset === "all" ? "text-[#FFD900]" : "text-white"
-              } font-raleway font-semibold tracking-[1px] px-2`}
-            >
-              {asset === "all"
-                ? "BRIDGING WENLAMBONFTS & LOCKED HVILLE"
-                : "SELECT TO BRIDGE WENLAMBONFTS"}
-            </div>
-          </div>
-          <div className="flex items-center">
-            <div
-              className={`${
-                asset === "hville"
-                  ? "bg-[rgba(255,217,0,0.22)] border-[3px] border-[#FFD900]"
-                  : "bg-[rgba(255,255,255,0.22)]"
-              } rounded-full flex items-center justify-center w-20 h-20 cursor-pointer`}
-              style={{ flex: "0 0 80px" }}
-              // onClick={() => setAsset("hville")}
-              onClick={() => setAsset("")}
-            >
-              <img
-                src={iconGville}
-                alt="hville"
-                loading="lazy"
-                className="w-14 h-14"
-              />
-            </div>
-            <div
-              className={`grow text-[11px] ${
-                asset === "hville" ? "text-[#FFD900]" : "text-white"
-              } font-raleway font-semibold tracking-[1px] px-2`}
-            >
-              {asset === "hville"
-                ? "BRIDGING UNLOCKED HVILLE"
-                : "SELECT TO BRIDGE HVILLE"}
+            <div className="text-white mt-2">
+              Please bridge your NFTs and $HVILLE from Harmony to Avalanche. You
+              should be on the Harmony network to bridge your NFTs to Avalanche.
             </div>
           </div>
         </div>
       </div>
       <div className="relative mt-14 grid grid-cols-2 gap-20 min-h-[45vh]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-36 h-36 z-10 text-center">
-          {asset === "" ? (
+          {isBridging ? (
+            <>
+              <img src={iconBridging} alt="bridging" className="relative" />
+              {/* <span class="animate-ping absolute top-0 left-0 h-20 w-20 rounded-full bg-sky-400 opacity-75 z-[-1]"></span> */}
+              {/* <div className="absolute animate-ping top-0 left-0 w-10 h-10 rounded-full bg-green-500 opacity-75 z-[-1]"></div> */}
+            </>
+          ) : (
             <div
-              className="bg-[rgba(255,217,0,0.2)] border-4 border-white shadow-[0_0_4px_#FFD900] rounded-full font-raleway font-bold text-lg text-white text-opacity-50 tracking-[1px] leading-[138px]"
-              style={{ textShadow: "0px 0px 4px #FFAE00" }}
+              className="bg-[#FFD900] hover:bg-yellow-600 border-4 border-white shadow-[0_0_4px_#FFD900] rounded-full font-raleway font-bold text-xl text-white tracking-[1px] leading-[138px] cursor-pointer"
+              style={{
+                textShadow: "0px 0px 4px #FFAE00",
+                boxShadow: "inset 0px 0px 53px 4px #FFAE00",
+              }}
+              onClick={() => handleBridgeAll()}
             >
               BRIDGE ALL
             </div>
-          ) : (
-            <>
-              {isBridging ? (
-                <>
-                  <img src={iconBridging} alt="bridging" className="relative" />
-                  {/* <span class="animate-ping absolute top-0 left-0 h-20 w-20 rounded-full bg-sky-400 opacity-75 z-[-1]"></span> */}
-                  {/* <div className="absolute animate-ping top-0 left-0 w-10 h-10 rounded-full bg-green-500 opacity-75 z-[-1]"></div> */}
-                </>
-              ) : (
-                <div
-                  className="bg-[#55C3FF] border-4 border-[#FFCE0D] shadow-[0_0_4px_#FFD900] rounded-full font-raleway font-bold text-xl text-[#1861A9] tracking-[1px] leading-[138px] cursor-pointer"
-                  style={{
-                    textShadow: "0px 0px 4px #FFAE00",
-                    boxShadow: "inset 0px 0px 53px 4px #054F78",
-                  }}
-                  onClick={() => handleBridgeAll(asset)}
-                >
-                  BRIDGE ALL
-                </div>
-              )}
-            </>
           )}
         </div>
-        <div className="relative bg-[#072637] bg-opacity-70 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] ">
+        <div className="relative bg-[#072637] bg-opacity-70 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] max-h-[45vh]">
           <img
             src={iconHarmony}
             alt="harmony"
@@ -303,102 +217,68 @@ const Bridge = ({ account }) => {
               <div className="text-[#FFD900] mt-4">NO ACTION REQUIRED</div>
             </div>
           )} */}
-          {asset === "all" && (
-            <>
-              {wenlamboIds.length === 0 ? (
-                <div className="flex items-center justify-center h-full">
-                  <div className="font-raleway text-sm font-semibold tracking-[1px] text-center max-w-xs">
-                    <div className="text-[#87C5E4]">
-                      THERE ARE NO ASSETS IN YOUR HARMONY WALLET
-                    </div>
-                    <div className="text-[#FFD900] mt-4">
-                      NO ACTION REQUIRED
+          {wenlamboIds.length === 0 ? (
+            <div className="flex items-center justify-center h-full ">
+              <div className="font-raleway text-sm font-semibold tracking-[1px] text-center max-w-xs">
+                <div className="text-[#87C5E4]">
+                  THERE ARE NO ASSETS IN YOUR HARMONY WALLET
+                </div>
+                <div className="text-[#FFD900] mt-4">NO ACTION REQUIRED</div>
+              </div>
+            </div>
+          ) : (
+            <div className="p-10">
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <img src={logoLambo} alt="lambo" className="w-11" />
+                  <div className="font-raleway text-white">
+                    <div className="text-xs tracking-widest">WENLAMBONFT</div>
+                    <div className="text-[#FDBC00] text-lg font-bold">
+                      {wenlamboIds.length}
                     </div>
                   </div>
                 </div>
-              ) : (
-                <div className="p-10">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <img src={logoLambo} alt="lambo" className="w-11" />
-                      <div className="font-raleway text-white">
-                        <div className="text-xs tracking-widest">
-                          WENLAMBONFT
-                        </div>
-                        <div className="text-[#FDBC00] text-lg font-bold">
-                          {wenlamboIds.length}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <img src={iconLockedHville} alt="hville" />
-                      <div className="font-raleway text-white">
-                        <div className="text-xs tracking-widest">
-                          LOCKED HVILLE
-                        </div>
-                        <div className="text-[#0986C7] text-lg font-bold">
-                          {(+lockedHville).toLocaleString()}
-                        </div>
-                      </div>
+                <div className="flex items-center gap-2">
+                  <img src={iconLockedHville} alt="hville" />
+                  <div className="font-raleway text-white">
+                    <div className="text-xs tracking-widest">LOCKED HVILLE</div>
+                    <div className="text-[#0986C7] text-lg font-bold">
+                      {(+lockedHville).toLocaleString()}
                     </div>
                   </div>
-                  <div className="grid grid-cols-5 gap-4 mt-6">
-                    {wenlamboIds.map((id) => (
-                      <div className="relative" key={id}>
-                        <img
-                          src={`https://meta.wenlambo.one/images/${id}.png`}
-                          alt="lambo"
-                          loading="lazy"
-                          className="rounded-tl-3xl rounded-br-3xl border border-gray-500"
-                        />
-                        <img
-                          src={imgLamboIdBg}
-                          alt=""
-                          loading="lazy"
-                          className="absolute bottom-0 left-1/2 -translate-x-1/2"
-                        />
-                        <div className="absolute font-bold text-[8px] bottom-0 flex items-center justify-center w-full">
-                          #{id}
-                        </div>
-                      </div>
-                    ))}
-                    {/* <img src={imgLambo} alt="lambo" />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[25vh] xl:max-h-[30vh] overflow-y-auto">
+                {wenlamboIds.map((id) => (
+                  <div className="relative" key={id}>
+                    <img
+                      src={`https://meta.wenlambo.one/images/${id}.png`}
+                      alt="lambo"
+                      loading="lazy"
+                      className="rounded-tl-3xl rounded-br-3xl border border-gray-500"
+                    />
+                    <img
+                      src={imgLamboIdBg}
+                      alt=""
+                      loading="lazy"
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2"
+                    />
+                    <div className="absolute font-bold text-[8px] bottom-0 flex items-center justify-center w-full">
+                      #{id}
+                    </div>
+                  </div>
+                ))}
+                {/* <img src={imgLambo} alt="lambo" />
                     <img src={imgLambo} alt="lambo" />
                     <img src={imgLambo} alt="lambo" />
                     <img src={imgLambo} alt="lambo" />
                     <img src={imgLambo} alt="lambo" />
                     <img src={imgLambo} alt="lambo" /> */}
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-          {asset === "hville" && (
-            <div className="flex items-center justify-center">
-              {isHvilleBridged ? (
-                <div className="font-raleway text-sm font-semibold tracking-[1px] text-center max-w-xs">
-                  <div className="text-[#87C5E4]">
-                    THERE ARE NO ASSETS IN YOUR HARMONY WALLET
-                  </div>
-                  <div className="text-[#FFD900] mt-4">NO ACTION REQUIRED</div>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <img src={iconGville} alt="hville" />
-                  <div className="font-raleway text-white">
-                    <div className="text-xs tracking-widest">
-                      UNLOCKED HVILLE
-                    </div>
-                    <div className="text-lg font-bold">
-                      {unlockedHville.toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
           )}
         </div>
-        <div className="relative bg-[#072637] bg-opacity-70 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px]">
+        <div className="relative bg-[#072637] bg-opacity-70 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] max-h-[45vh]">
           <img
             src={iconAvax}
             alt="avax"
@@ -419,92 +299,64 @@ const Bridge = ({ account }) => {
             </div>
           ) : (
             <>
-              {asset === "all" && (
-                <>
-                  {avaxLamboIds.length > 0 ? (
-                    <div className="p-10">
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                          <img src={logoLambo} alt="lambo" className="w-11" />
-                          <div className="font-raleway text-white">
-                            <div className="text-xs tracking-widest">
-                              WENLAMBONFT
-                            </div>
-                            <div className="text-[#FDBC00] text-lg font-bold">
-                              {avaxLamboIds.length}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <img src={iconLockedHville} alt="hville" />
-                          <div className="font-raleway text-white">
-                            <div className="text-xs tracking-widest">
-                              LOCKED HVILLE
-                            </div>
-                            <div className="text-[#0986C7] text-lg font-bold">
-                              {(+avaxLockedHville).toLocaleString()}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-5 gap-4 mt-6">
-                        {avaxLamboIds.map((id) => (
-                          <div className="relative" key={id}>
-                            <img
-                              src={`https://meta.wenlambo.one/images/${id}.png`}
-                              alt="lambo"
-                              loading="lazy"
-                              className="rounded-tl-3xl rounded-br-3xl border border-gray-500"
-                            />
-                            <img
-                              src={imgLamboIdBg}
-                              alt=""
-                              loading="lazy"
-                              className="absolute bottom-0 left-1/2 -translate-x-1/2"
-                            />
-                            <div className="absolute font-bold text-[8px] bottom-0 flex items-center justify-center w-full">
-                              #{id}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <div className="font-raleway text-sm font-semibold tracking-[1px] text-center max-w-xs">
-                        <div className="text-white">
-                          THERE ARE NO ASSETS IN YOUR AVALANCHE WALLET
-                        </div>
-                        <div className="text-[#FF0000] mt-4">
-                          MINT OR BRIDGE NOW TO SEE ASSETS
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-              {asset === "hville" && (
-                <div className="flex items-center justify-center h-full">
-                  {isHvilleBridged ? (
+              {avaxLamboIds.length > 0 ? (
+                <div className="p-10">
+                  <div className="flex flex-wrap items-center gap-4">
                     <div className="flex items-center gap-2">
-                      <img src={iconGville} alt="hville" />
+                      <img src={logoLambo} alt="lambo" className="w-11" />
                       <div className="font-raleway text-white">
                         <div className="text-xs tracking-widest">
-                          UNLOCKED HVILLE
+                          WENLAMBONFT
                         </div>
-                        <div className="text-lg font-bold">3,282</div>
+                        <div className="text-[#FDBC00] text-lg font-bold">
+                          {avaxLamboIds.length}
+                        </div>
                       </div>
                     </div>
-                  ) : (
-                    <div className="font-raleway text-sm font-semibold tracking-[1px] text-center max-w-xs">
-                      <div className="text-white">
-                        THERE ARE NO ASSETS IN YOUR AVALANCHE WALLET
-                      </div>
-                      <div className="text-[#FF0000] mt-4">
-                        MINT OR BRIDGE NOW TO SEE ASSETS
+                    <div className="flex items-center gap-2">
+                      <img src={iconLockedHville} alt="hville" />
+                      <div className="font-raleway text-white">
+                        <div className="text-xs tracking-widest">
+                          LOCKED HVILLE
+                        </div>
+                        <div className="text-[#0986C7] text-lg font-bold">
+                          {(+avaxLockedHville).toLocaleString()}
+                        </div>
                       </div>
                     </div>
-                  )}
+                  </div>
+                  <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[25vh] xl:max-h-[30vh] overflow-y-auto">
+                    {avaxLamboIds.map((id) => (
+                      <div className="relative" key={id}>
+                        <img
+                          src={`https://meta.wenlambo.one/images/${id}.png`}
+                          alt="lambo"
+                          loading="lazy"
+                          className="rounded-tl-3xl rounded-br-3xl border border-gray-500"
+                        />
+                        <img
+                          src={imgLamboIdBg}
+                          alt=""
+                          loading="lazy"
+                          className="absolute bottom-0 left-1/2 -translate-x-1/2"
+                        />
+                        <div className="absolute font-bold text-[8px] bottom-0 flex items-center justify-center w-full">
+                          #{id}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <div className="font-raleway text-sm font-semibold tracking-[1px] text-center max-w-xs">
+                    <div className="text-white">
+                      THERE ARE NO ASSETS IN YOUR AVALANCHE WALLET
+                    </div>
+                    <div className="text-[#FF0000] mt-4">
+                      MINT OR BRIDGE NOW TO SEE ASSETS
+                    </div>
+                  </div>
                 </div>
               )}
             </>
