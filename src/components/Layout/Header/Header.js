@@ -1,11 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import { Fade } from "react-awesome-reveal";
-// import { formatEther } from "ethers/lib/utils";
 
 import "./Header.css";
 import {
   svgBorderTM,
-  // logoAvax,
   headerTitle,
   headerTitleBg,
 } from "../../../utils/helper/image.helper";
@@ -13,10 +11,6 @@ import {
 import headerTitleBg2 from "../../../assets/svg/header-title-bg-2.svg";
 import headerTitleBorder2 from "../../../assets/svg/header-title-border-2.svg";
 import headerCityLogo from "../../../assets/image/header-avax-hills-logo.png";
-// import cityAvalancheHillsLogo from "../../../assets/image/avax-hills-circle-logo-white.png";
-// import cityGrantsvilleLogo from "../../../assets/image/grantsville-select-logo.png";
-// import iconArrowUpRed from "../../../assets/svg/icon-arrow-up-red.svg";
-// import iconArrowUpYellow from "../../../assets/svg/icon-arrow-up-yellow.svg";
 import logo from "../../../assets/image/logo.png";
 
 import grantsBorderTM from "../../../assets/svg/grantsville/border-tm.svg";
@@ -24,10 +18,6 @@ import grantsHeaderTitleBg from "../../../assets/svg/grantsville/header-title-bg
 import grantsHeaderTitleBorder from "../../../assets/svg/grantsville/header-title-border.svg";
 import grantsHeaderCityLogo from "../../../assets/image/grantsville/grantsville-city-logo.png";
 
-// const brandNames = {
-//   light: "avalanche hills",
-//   dark: "grantsville",
-// };
 const cityLogos = {
   light: headerCityLogo,
   dark: grantsHeaderCityLogo,
@@ -46,20 +36,6 @@ const headerTitleBorders = {
 };
 
 const Header = ({ menu, theme, avaxBalance, setTheme }) => {
-  // const [isCityOpen, setIsCityOpen] = useState(false);
-
-  // const handleSelectMetacity = useCallback(() => {
-  //   setIsCityOpen(!isCityOpen);
-  // }, [isCityOpen]);
-  // const handleSelectToAvalancheHills = useCallback(() => {
-  //   setTheme("light");
-  //   setIsCityOpen(false);
-  // }, [setTheme]);
-  // const handleSelectToGrantsville = useCallback(() => {
-  //   setTheme("dark");
-  //   setIsCityOpen(false);
-  // }, [setTheme]);
-
   return (
     <header>
       <img
@@ -83,51 +59,11 @@ const Header = ({ menu, theme, avaxBalance, setTheme }) => {
           alt="titleBorder"
           className="relative"
         />
-        {/* {isCityOpen && (
-          <div className="z-50 absolute top-full left-[34.3%] -translate-x-1/2 grid grid-cols-2 gap-2 xl:gap-4 border border-t-0 border-white rounded-b-2xl bg-gradient-to-b from-black to-[#1C1C1C] z-101 w-1/2 py-4">
-            <div className="flex items-center justify-center">
-              <div
-                className="cursor-pointer"
-                onClick={() => handleSelectToAvalancheHills()}
-              >
-                <img src={cityAvalancheHillsLogo} alt="" className="w-full" />
-                {theme === "light" && (
-                  <div className="mt-2 flex items-center justify-center gap-1">
-                    <img src={iconArrowUpRed} alt="" />
-                    <div className="font-raleway font-semibold text-[10px] text-[#FF0000] tracking-[2px] uppercase">
-                      selected
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center justify-center">
-              <div
-                className="cursor-pointer"
-                onClick={() => handleSelectToGrantsville()}
-              >
-                <img
-                  src={cityGrantsvilleLogo}
-                  alt=""
-                  className="w-[80%] mx-auto"
-                />
-                {theme === "dark" && (
-                  <div className="mt-2 flex items-center justify-center gap-1">
-                    <img src={iconArrowUpYellow} alt="" />
-                    <div className="font-raleway font-semibold text-[10px] text-[#FFD10F] tracking-[2px] uppercase">
-                      selected
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )} */}
       </div>
       <img
         src={cityLogos[theme]}
         alt="metacity-logo"
-        className="absolute top-[4vh] left-[36%] w-[2.3vw] z-10"
+        className="absolute top-1.5 left-1.5 w-5 md:top-[4vh] md:left-[36%] md:w-[2.3vw] z-10"
       />
       {/* mobile view */}
       <img
@@ -153,27 +89,15 @@ const Header = ({ menu, theme, avaxBalance, setTheme }) => {
                   : "0px 0px 5px rgba(0, 133, 255, 0.98)",
             }}
           >
-            {/* {brandNames[theme]} */}
             mcverse
+            <span className="text-white ml-2 pl-2 border-l border-white md:hidden">
+              bridge
+            </span>
           </div>
-          {/* <div className="w-px h-5 border-r border-white"></div>
-          <div
-            className="font-raleway font-semibold text-xs text-[#FF0000] dark:text-[#FFD10F] uppercase tracking-widest cursor-pointer"
-            style={{
-              textShadow:
-                theme === "light"
-                  ? "0px 0px 5px rgba(255, 97, 97, 0.98)"
-                  : "0px 0px 5px #FFCE0D",
-            }}
-            onClick={() => handleSelectMetacity()}
-          >
-            select metacity
-          </div> */}
         </Fade>
       </div>
-      <div className="absolute top-2 md:top-[3.5vh] lg:top-[4.5vh] left-8 md:left-[70%] md:-translate-x-1/2 flex items-center gap-2">
+      <div className="absolute top-2 md:top-[3.5vh] lg:top-[4.5vh] left-8 md:left-[70%] md:-translate-x-1/2 hidden md:flex items-center gap-2">
         <Fade direction="up">
-          {/* <img src={headerIconGarage} alt="" /> */}
           <div
             className="text-xs md:text-sm font-semibold text-white font-raleway uppercase tracking-widest"
             style={{
@@ -183,35 +107,10 @@ const Header = ({ menu, theme, avaxBalance, setTheme }) => {
                   : "0px 0px 5px rgba(0, 133, 255, 0.98)",
             }}
           >
-            {/* {menu === "" && "global"}
-            {menu === "dealership" && "dealership"}
-            {menu === "presale" && "presale"}
-            {menu === "mygarage" && "my garage"}
-            {menu === "bank" && "bank"}
-            {menu === "speedshop" && "speedshop"}
-            {menu === "bridge" && "bridge"} */}
             bridge
           </div>
         </Fade>
       </div>
-      {/* <div className="absolute top-[7%] right-12 lg:right-16 md:flex items-center hidden">
-        <Fade cascade direction="left">
-          <div className="flex items-center">
-            <img src={logoAvax} alt="avax" className="lg:w-10 xl:w-12" />
-            <div className="ml-4">
-              <div className="text-white text-xs font-raleway uppercase tracking-widest">
-                avax
-              </div>
-              <div
-                className="text-base xl:text-lg text-white tracking-widest font-bold"
-                style={{ fontFamily: "Raleway" }}
-              >
-                {avaxBalance && (+formatEther(avaxBalance)).toLocaleString()}
-              </div>
-            </div>
-          </div>
-        </Fade>
-      </div> */}
     </header>
   );
 };

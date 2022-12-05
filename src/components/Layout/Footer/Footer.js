@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { Fade } from "react-awesome-reveal";
 
 import {
-  mainLogo,
   svgBorderBL,
   svgBorderBR,
   svgAvaxEf,
@@ -12,6 +10,7 @@ import {
   socialTwitter,
   socialInstagram,
 } from "../../../utils/helper/image.helper";
+import logo from "../../../assets/image/logo.png";
 
 import { setAvaxPrice } from "../../../reducers/mintInfoSlice";
 
@@ -33,8 +32,6 @@ const iconInstagram = {
 };
 const Footer = ({ menu, theme }) => {
   const dispatch = useDispatch();
-  const mintedNum = useSelector((state) => state.mintInfo.mintedNum);
-  const stockNum = useSelector((state) => state.mintInfo.stockNum);
 
   const avaxPrice = useSelector((state) => state.mintInfo.avaxPrice);
 
@@ -142,101 +139,17 @@ const Footer = ({ menu, theme }) => {
         className="absolute bottom-0 right-0 w-[12vw] hidden md:block"
       />
       {/* Mobile Footer */}
-      <div className="bg-gradient-to-b from-red-900 to-black w-full px-4 md:hidden">
+      <div className="bg-gradient-to-b from-cyan-900 to-black w-full px-4 md:hidden">
         <div className="flex items-center justify-between gap-2 border-b border-dashed border-gray-400">
-          <div className="text-center">
-            {(menu === "presale" || menu === "dealership") && (
-              <>
-                <div
-                  className="text-white font-kanit font-bold text-3xl tracking-[1px]"
-                  style={{ textShadow: "0px 0px 5px rgba(255, 87, 87, 0.85)" }}
-                >
-                  {mintedNum}
-                </div>
-                <div
-                  className="text-[11px] lg:text-xs text-[#FF0000] font-bold font-raleway tracking-[1px] uppercase"
-                  style={{ textShadow: "0px 0px 4px #FF0000" }}
-                >
-                  vehicles minted
-                </div>
-              </>
-            )}
-          </div>
+          <div className="text-center"></div>
           <div className="w-32 flex items-center justify-center transform -translate-y-1/4">
             <Link className="logo" to="/">
-              <img src={mainLogo} alt="logo" />
+              <img src={logo} alt="logo" />
             </Link>
           </div>
-          <div className="text-center">
-            {(menu === "presale" || menu === "dealership") && (
-              <>
-                <div
-                  className="text-white font-kanit font-bold text-3xl tracking-[1px]"
-                  style={{ textShadow: "0px 0px 5px rgba(255, 87, 87, 0.85)" }}
-                >
-                  {stockNum}
-                </div>
-                <div
-                  className="text-[11px] lg:text-xs text-[#FF0000] font-bold font-raleway tracking-[1px] uppercase"
-                  style={{ textShadow: "0px 0px 4px #FF0000" }}
-                >
-                  stock inventory
-                </div>
-              </>
-            )}
-          </div>
+          <div className="text-center"></div>
         </div>
-        {/* <div className="flex items-center justify-between text-yellow-400 border-b border-t border-dashed border-gray-400 py-1"> */}
-        {/* <ol>
-            <li>
-              <a
-                href="https://nftkey.app/collections/wenlambonft/"
-                target={"_blank"}
-                rel="noreferrer"
-                className="text-xs"
-                title="Click to go to Nftkey.app"
-              >
-                BUY/SELL LAMBOS ON NFTKEY.APP
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://app.sushi.com/swap?inputCurrency=0xF9565E8c4E13862f677F144B3cdC8700D9c4BA31&outputCurrency=ETH&chainId=1666600000"
-                target={"_blank"}
-                rel="noreferrer"
-                className="text-xs"
-                title="Click to go to Sushi"
-              >
-                GET HVILLE ON SUSHI
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://harmonyville.one"
-                target={"_blank"}
-                rel="noreferrer"
-                className="text-xs"
-                title="Click to go to Harmonyville.one"
-              >
-                VISIT HARMONYVILLE.ONE
-              </a>
-            </li>
-          </ol> */}
-        {/* </div> */}
         <div className="flex items-center justify-between py-2">
-          {/* <div className="flex items-center">
-            <img
-              src="images/hville-token.png"
-              alt="hvilleprice"
-              className="w-8 mr-2"
-            />
-            <div className="flex flex-col">
-              <h6 className="color-hville">
-                {hvillePrice ? `${parseFloat(hvillePrice).toFixed(4)}` : ""}
-              </h6>
-              <span className="text-gray-500 text-2xs">$HVILLE</span>
-            </div>
-          </div> */}
           <div className="flex items-center relative">
             <img src={svgAvaxEf} alt="one-icon" className="absolute left-0" />
             <div className="uppercase ml-12">

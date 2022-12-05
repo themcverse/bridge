@@ -2,18 +2,13 @@ import React from "react";
 
 import "./Login.css";
 import {
-  // frame,
-  // frameBorder,
-  // footer,
   svgBorderBL,
   svgBorderBR,
   socialDiscord,
   socialInstagram,
   socialTwitter,
-  // svgBorderTM,
   headerTitleBg,
   headerTitle,
-  mainLogo,
 } from "../../utils/helper/image.helper";
 
 import grantsFrame from "../../assets/image/grantsville/frame-2.png";
@@ -83,7 +78,7 @@ const Login = ({ connectWallet }) => {
           <div className="absolute w-full h-full flex items-center justify-center">
             <div className="connect-wallet font-raleway text-center uppercase w-[600px]">
               <div
-                className="text-[#0080FF] font-semibold text-2xl tracking-[2.7px] pt-14 pb-8"
+                className="text-[#00E0FF] font-semibold text-2xl tracking-[2.7px] pt-14 pb-8"
                 style={{ textShadow: "0px 0p 5px #FFFFFF" }}
               >
                 please connect your wallet
@@ -173,47 +168,47 @@ const Login = ({ connectWallet }) => {
         <img
           src={headerTitleBg}
           alt="titleBg"
-          className="absolute left-1/2 -translate-x-1/2 mix-blend-multiply w-[90vw]"
+          className="absolute left-1/2 -translate-x-1/2 mix-blend-multiply w-4/5 sm:w-1/2"
         />
         <img
           src={headerTitle}
           alt="title"
-          className="absolute left-1/2 -translate-x-1/2 w-[90vw]"
+          className="absolute left-1/2 -translate-x-1/2 w-4/5 sm:w-1/2"
         />
         <div className="w-full h-[100vh] flex items-center justify-center">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center w-[90vw] h-10 text-center">
             <div
-              className="text-sm font-semibold text-white font-raleway uppercase tracking-widest w-full"
-              style={{ textShadow: "0px 0px 5px rgba(255, 97, 97, 0.98)" }}
+              className="text-sm font-semibold text-[#FFD900] font-raleway uppercase tracking-widest w-full"
+              style={{ textShadow: "0px 0px 5px rgba(0, 128, 255, 0.98)" }}
             >
-              welcome to avalanche hills
+              welcome to mcverse
             </div>
           </div>
           <div className="connect-wallet font-raleway text-center uppercase w-[90vw]">
             {/* <div className="connect-wallet-border"></div> */}
             <div
-              className="text-[#FF0000] font-semibold text-xl tracking-[2.7px] pt-14 pb-8"
-              style={{ textShadow: "0px 0p 5px #FF2929" }}
+              className="text-[#00E0FF] font-semibold text-xl tracking-[2.7px] pt-14 pb-8"
+              style={{ textShadow: "0px 0p 5px #FFFFFF" }}
             >
               please connect your wallet
             </div>
-            <div className="w-1/2 h-px border-t border-dashed border-[#FF0000] mx-auto"></div>
+            <div className="w-1/2 h-px border-t border-dashed border-[#0080FF] mx-auto"></div>
             <div
-              className="w-fit text-white font-bold text-xl tracking-[1px] border border-solid hover:bg-rose-500 hover:bg-opacity-50 border-white rounded-tr-[10px] rounded-bl-[10px] cursor-pointer py-6 px-9 my-9 mx-auto"
-              style={{ textShadow: "0px 0px 5px #EF3B43" }}
+              className="w-fit text-white font-bold text-xl tracking-[1px] border border-solid hover:bg-cyan-500 hover:bg-opacity-50 border-white rounded-tr-[10px] rounded-bl-[10px] cursor-pointer py-6 px-9 my-9 mx-auto"
+              style={{ textShadow: "0px 0px 5px #0080FF" }}
               onClick={() => connectWallet()}
             >
               connect wallet
             </div>
-            <div className="w-3/5 text-sm text-[#E85858] tracking-[1.5px] mx-auto mb-10">
+            <div className="w-3/5 text-sm text-[#00E0FF] tracking-[1.5px] mx-auto mb-10">
               make sure you connect your metamask to the harmony network
             </div>
           </div>
         </div>
-        <div className="bg-gradient-to-b from-gray-500 via-black to-black w-full px-4 md:hidden">
+        <div className="bg-gradient-to-b from-cyan-900 via-black to-black w-full px-4 md:hidden">
           <div className="flex items-center justify-center">
             <div className="w-32 flex items-center justify-center transform -translate-y-1/4">
-              <img src={mainLogo} alt="logo" />
+              <img src={logo} alt="logo" />
             </div>
           </div>
           <div className="flex items-center justify-between py-2">

@@ -39,7 +39,7 @@ const LayoutContainer = (props) => {
         </div>
       </div>
       <div
-        className={`main-mobile ${props.bgClass} md:hidden min-h-screen`}
+        className={`main-mobile ${props.bgClass} grantsville md:hidden min-h-screen`}
         style={{ height: "unset" }}
       >
         {props.children}

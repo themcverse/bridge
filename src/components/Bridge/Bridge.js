@@ -6,12 +6,11 @@ import { PulseLoader } from "react-spinners";
 import "./Bridge.css";
 import iconBridge from "../../assets/svg/grantsville/bridge-main-icon.svg";
 import logoLambo from "../../assets/image/logo-wenlambo.png";
-import iconGville from "../../assets/svg/grantsville/icon-gville.svg";
-import iconLockedHville from "../../assets/svg/grantsville/icon-locked-hville.svg";
+// import iconGville from "../../assets/svg/grantsville/icon-gville.svg";
+// import iconLockedHville from "../../assets/svg/grantsville/icon-locked-hville.svg";
 import iconHarmony from "../../assets/svg/icon-harmony.svg";
 import iconAvax from "../../assets/svg/icon-avax.svg";
 import iconBridging from "../../assets/svg/icon-bridging.svg";
-// import imgLambo from "../../assets/image/grantsville/wenlambo.png";
 import imgLamboIdBg from "../../assets/svg/grantsville/wenlambo-id-container.svg";
 
 import {
@@ -31,12 +30,12 @@ const Bridge = ({ account }) => {
   const [wenlamboContract, setWenlamboContract] = useState(null);
   const [wenlamboGarageContract, setWenlamboGarageContract] = useState(null);
   const [wenlamboIds, setWenlamboIds] = useState([]);
-  const [lockedHville, setLockedHville] = useState(0);
-  const [unlockedHville, setUnlockedHville] = useState(0);
+  // const [lockedHville, setLockedHville] = useState(0);
+  // const [unlockedHville, setUnlockedHville] = useState(0);
 
   const [avaxContract, setAvaxContract] = useState(null);
   const [avaxLamboIds, setAvaxLamboIds] = useState([]);
-  const [avaxLockedHville, setAvaxLockedHville] = useState(0);
+  // const [avaxLockedHville, setAvaxLockedHville] = useState(0);
 
   const handleBridgeAll = async () => {
     try {
@@ -55,6 +54,11 @@ const Bridge = ({ account }) => {
         await txApproval.wait();
       }
 
+      // const queue = wenlamboIds.map((id) => [
+      //   [wenlamboAddress, id],
+      //   ["fuji", account],
+      // ]);
+      // cont tx = await bridgeContract.queue(queue);
       const tx = await bridgeContract.queue([
         [
           [wenlamboAddress, wenlamboIds[0]],
@@ -88,43 +92,43 @@ const Bridge = ({ account }) => {
       const avaxIds = await avaxContract.tokensOfOwner(account);
       const myAvaxIds = avaxIds.map((id) => id.toString());
       setAvaxLamboIds(myAvaxIds);
-      const attributes = await wenlamboGarageContract.getTokenAttributesMany(
-        myIds
-      );
-      console.log(attributes);
-      const lockedHville =
-        await wenlamboGarageContract.getTotalLockedForAddress(account);
-      console.log(lockedHville);
-      const totalUnlocked = attributes.reduce(
-        (acc, each) =>
-          acc + parseFloat(ethers.utils.formatUnits(each["unlocked"], 18)),
-        0
-      );
-      console.log(totalUnlocked);
-      setLockedHville(ethers.utils.formatUnits(lockedHville[0], 18));
-      setUnlockedHville(totalUnlocked);
+      // const attributes = await wenlamboGarageContract.getTokenAttributesMany(
+      //   myIds
+      // );
+      // console.log(attributes);
+      // const lockedHville =
+      //   await wenlamboGarageContract.getTotalLockedForAddress(account);
+      // console.log(lockedHville);
+      // const totalUnlocked = attributes.reduce(
+      //   (acc, each) =>
+      //     acc + parseFloat(ethers.utils.formatUnits(each["unlocked"], 18)),
+      //   0
+      // );
+      // console.log(totalUnlocked);
+      // setLockedHville(ethers.utils.formatUnits(lockedHville[0], 18));
+      // setUnlockedHville(totalUnlocked);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const test = async () => {
-    try {
-      const rrr = await bridgeContract.historyLength();
-      console.log("---- test ----\n", rrr, rrr.toString());
-      const chain = await bridgeContract.chain();
-      console.log("chain:", chain);
+  // const test = async () => {
+  //   try {
+  //     const rrr = await bridgeContract.historyLength();
+  //     console.log("---- test ----\n", rrr, rrr.toString());
+  //     const chain = await bridgeContract.chain();
+  //     console.log("chain:", chain);
 
-      console.log("account: ", account);
-      const ids = await wenlamboContract.tokensOfOwner(account);
-      console.log(
-        "lambo - ids: ",
-        ids.map((id) => id.toString())
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     console.log("account: ", account);
+  //     const ids = await wenlamboContract.tokensOfOwner(account);
+  //     console.log(
+  //       "lambo - ids: ",
+  //       ids.map((id) => id.toString())
+  //     );
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
   useEffect(() => {
     const { ethereum } = window;
     const provider = new ethers.providers.Web3Provider(ethereum);
@@ -166,9 +170,9 @@ const Bridge = ({ account }) => {
   }, []);
 
   return (
-    <div className="absolute left-[10%] top-[12%] w-[74vw] h-[68vh]">
+    <div className="p-4 pt-10 mb-8 md:absolute md:left-[10%] md:top-[12%] md:w-[74vw] md:h-[68vh]">
       <div className="md:w-3/4 lg:w-2/3 2xl:w-1/2 mx-auto">
-        <div className="bg-[#072637] bg-opacity-50 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] p-4 flex items-center gap-2">
+        <div className="bg-[#072637] bg-opacity-50 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] p-4 flex flex-col sm:flex-row items-center gap-2">
           <img src={iconBridge} alt="" />
           {/* <button
               className="text-white border border-white bg-cyan-600"
@@ -188,7 +192,7 @@ const Bridge = ({ account }) => {
           </div>
         </div>
       </div>
-      <div className="relative mt-14 grid grid-cols-2 gap-20 min-h-[45vh]">
+      <div className="relative mt-14 ml-10 sm:ml-0 grid sm:grid-cols-2 gap-20 min-h-[45vh]">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-36 h-36 z-10 text-center">
           {isBridging ? (
             <>
@@ -213,7 +217,7 @@ const Bridge = ({ account }) => {
           <img
             src={iconHarmony}
             alt="harmony"
-            className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
+            className="absolute left-0 top-1/2 sm:left-1/2 sm:top-0 -translate-x-1/2 -translate-y-1/2"
           />
           {/* {asset === "" && (
             <div className="font-raleway text-sm font-semibold tracking-[1px] text-center max-w-xs">
@@ -288,7 +292,7 @@ const Bridge = ({ account }) => {
           <img
             src={iconAvax}
             alt="avax"
-            className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
+            className="absolute left-0 top-1/2 sm:left-1/2 sm:top-0 -translate-x-1/2 -translate-y-1/2"
           />
           {isBridging ? (
             <div className="flex items-center justify-center h-full">
