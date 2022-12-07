@@ -25,6 +25,7 @@ import wenlamboGarageABI from "../../contracts/abis/Wenlambo/Garage.json";
 
 const Bridge = ({ account }) => {
   const [isBridging, setIsBridging] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [bridgeContract, setBridgeContract] = useState(null);
   const [wenlamboContract, setWenlamboContract] = useState(null);
@@ -72,7 +73,7 @@ const Bridge = ({ account }) => {
       console.log(tx);
       const result = await tx.wait();
       console.log(result);
-      getWenlamboAssets(wenlamboContract, wenlamboGarageContract, avaxContract);
+      getWenlamboAssets(wenlamboContract, avaxContract);
       setIsBridging(false);
     } catch (error) {
       setIsBridging(false);
@@ -80,18 +81,16 @@ const Bridge = ({ account }) => {
     }
   };
 
-  const getWenlamboAssets = async (
-    wenlamboContract,
-    wenlamboGarageContract,
-    avaxContract
-  ) => {
+  const getWenlamboAssets = async (wenlamboContract, avaxContract) => {
     try {
+      setIsLoading(true);
       const ids = await wenlamboContract.tokensOfOwner(account);
       const myIds = ids.map((id) => id.toString());
       setWenlamboIds(myIds);
       const avaxIds = await avaxContract.tokensOfOwner(account);
       const myAvaxIds = avaxIds.map((id) => id.toString());
       setAvaxLamboIds(myAvaxIds);
+      setIsLoading(false);
       // const attributes = await wenlamboGarageContract.getTokenAttributesMany(
       //   myIds
       // );
@@ -108,6 +107,7 @@ const Bridge = ({ account }) => {
       // setLockedHville(ethers.utils.formatUnits(lockedHville[0], 18));
       // setUnlockedHville(totalUnlocked);
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   };
@@ -166,7 +166,7 @@ const Bridge = ({ account }) => {
     setWenlamboGarageContract(wenlamboGarageContract);
     setAvaxContract(avaxContract);
 
-    getWenlamboAssets(wenlamboContract, wenlamboGarageContract, avaxContract);
+    getWenlamboAssets(wenlamboContract, avaxContract);
   }, []);
 
   return (
@@ -311,7 +311,7 @@ const Bridge = ({ account }) => {
             <>
               {avaxLamboIds.length > 0 ? (
                 <div className="p-10">
-                  <div className="flex flex-wrap items-center gap-4">
+                  <div className="flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                       <img src={logoLambo} alt="lambo" className="w-11" />
                       <div className="font-raleway text-white">
@@ -323,6 +323,20 @@ const Bridge = ({ account }) => {
                         </div>
                       </div>
                     </div>
+                    {isLoading ? (
+                      <div className="px-2 py-1 border border-[#FDBC00] text-[#FDBC00] rounded-tr-xl tracking-[1px] uppercase cursor-not-allowed">
+                        refresh
+                      </div>
+                    ) : (
+                      <div
+                        className="px-2 py-1 border border-[#FDBC00] hover:bg-yellow-900 text-[#FDBC00] rounded-tr-xl tracking-[1px] uppercase cursor-pointer"
+                        onClick={() =>
+                          getWenlamboAssets(wenlamboContract, avaxContract)
+                        }
+                      >
+                        refresh
+                      </div>
+                    )}
                     {/* <div className="flex items-center gap-2">
                       <img src={iconLockedHville} alt="hville" />
                       <div className="font-raleway text-white">
@@ -335,27 +349,36 @@ const Bridge = ({ account }) => {
                       </div>
                     </div> */}
                   </div>
-                  <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[25vh] xl:max-h-[30vh] overflow-y-auto">
-                    {avaxLamboIds.map((id) => (
-                      <div className="relative" key={id}>
-                        <img
-                          src={`https://meta.wenlambo.one/images/${id}.png`}
-                          alt="lambo"
-                          loading="lazy"
-                          className="rounded-tl-3xl rounded-br-3xl border border-gray-500"
-                        />
-                        <img
-                          src={imgLamboIdBg}
-                          alt=""
-                          loading="lazy"
-                          className="absolute bottom-0 left-1/2 -translate-x-1/2"
-                        />
-                        <div className="absolute font-bold text-[8px] bottom-0 flex items-center justify-center w-full">
-                          #{id}
-                        </div>
+                  {isLoading ? (
+                    <div className="flex items-center justify-center h-20">
+                      <div>
+                        <div className="text-white">LOADING...</div>
+                        <PulseLoader color="#ffffff" className="mt-2" />
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ) : (
+                    <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[25vh] xl:max-h-[30vh] overflow-y-auto">
+                      {avaxLamboIds.map((id) => (
+                        <div className="relative" key={id}>
+                          <img
+                            src={`https://meta.wenlambo.one/images/${id}.png`}
+                            alt="lambo"
+                            loading="lazy"
+                            className="rounded-tl-3xl rounded-br-3xl border border-gray-500"
+                          />
+                          <img
+                            src={imgLamboIdBg}
+                            alt=""
+                            loading="lazy"
+                            className="absolute bottom-0 left-1/2 -translate-x-1/2"
+                          />
+                          <div className="absolute font-bold text-[8px] bottom-0 flex items-center justify-center w-full">
+                            #{id}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="flex items-center justify-center h-full">
