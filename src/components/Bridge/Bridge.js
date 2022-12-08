@@ -59,7 +59,7 @@ const Bridge = ({ account }) => {
         [wenlamboAddress, id],
         ["fuji", account],
       ]);
-      cont tx = await bridgeContract.queue(queue);
+      const tx = await bridgeContract.queue(queue);
       // const tx = await bridgeContract.queue([
       //   [
       //     [wenlamboAddress, wenlamboIds[0]],
