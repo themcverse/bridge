@@ -55,21 +55,21 @@ const Bridge = ({ account }) => {
         await txApproval.wait();
       }
 
-      // const queue = wenlamboIds.map((id) => [
-      //   [wenlamboAddress, id],
-      //   ["fuji", account],
-      // ]);
-      // cont tx = await bridgeContract.queue(queue);
-      const tx = await bridgeContract.queue([
-        [
-          [wenlamboAddress, wenlamboIds[0]],
-          ["fuji", account],
-        ],
-        [
-          [wenlamboAddress, wenlamboIds[1]],
-          ["fuji", account],
-        ],
+      const queue = wenlamboIds.map((id) => [
+        [wenlamboAddress, id],
+        ["fuji", account],
       ]);
+      cont tx = await bridgeContract.queue(queue);
+      // const tx = await bridgeContract.queue([
+      //   [
+      //     [wenlamboAddress, wenlamboIds[0]],
+      //     ["fuji", account],
+      //   ],
+      //   [
+      //     [wenlamboAddress, wenlamboIds[1]],
+      //     ["fuji", account],
+      //   ],
+      // ]);
       console.log(tx);
       const result = await tx.wait();
       console.log(result);
