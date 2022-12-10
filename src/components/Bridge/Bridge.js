@@ -58,7 +58,7 @@ const Bridge = ({ account }) => {
       if (wenlamboIds.length > 50) {
         const queue = wenlamboIds.slice(0, 50).map((id) => [
           [wenlamboAddress, id],
-          ["fuji", account],
+          ["avax", account],
         ]);
         const tx = await bridgeContract.queue(queue);
         console.log(tx);
@@ -67,7 +67,7 @@ const Bridge = ({ account }) => {
       } else {
         const queue = wenlamboIds.map((id) => [
           [wenlamboAddress, id],
-          ["fuji", account],
+          ["avax", account],
         ]);
         const tx = await bridgeContract.queue(queue);
         console.log(tx);
