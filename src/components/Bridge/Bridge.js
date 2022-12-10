@@ -55,11 +55,30 @@ const Bridge = ({ account }) => {
         await txApproval.wait();
       }
 
-      const queue = wenlamboIds.map((id) => [
-        [wenlamboAddress, id],
-        ["fuji", account],
-      ]);
-      const tx = await bridgeContract.queue(queue);
+      if (wenlamboIds.length > 50) {
+        const queue = wenlamboIds.slice(0, 50).map((id) => [
+          [wenlamboAddress, id],
+          ["fuji", account],
+        ]);
+        const tx = await bridgeContract.queue(queue);
+        console.log(tx);
+        const result = await tx.wait();
+        console.log(result);
+      } else {
+        const queue = wenlamboIds.map((id) => [
+          [wenlamboAddress, id],
+          ["fuji", account],
+        ]);
+        const tx = await bridgeContract.queue(queue);
+        console.log(tx);
+        const result = await tx.wait();
+        console.log(result);
+      }
+      // const queue = wenlamboIds.map((id) => [
+      //   [wenlamboAddress, id],
+      //   ["fuji", account],
+      // ]);
+      // const tx = await bridgeContract.queue(queue);
       // const tx = await bridgeContract.queue([
       //   [
       //     [wenlamboAddress, wenlamboIds[0]],
@@ -70,9 +89,7 @@ const Bridge = ({ account }) => {
       //     ["fuji", account],
       //   ],
       // ]);
-      console.log(tx);
-      const result = await tx.wait();
-      console.log(result);
+
       getWenlamboAssets(wenlamboContract, avaxContract);
       setIsBridging(false);
     } catch (error) {
