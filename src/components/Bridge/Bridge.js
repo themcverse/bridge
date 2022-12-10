@@ -187,8 +187,8 @@ const Bridge = ({ account }) => {
   }, []);
 
   return (
-    <div className="p-4 pt-10 mb-8 md:absolute md:left-[10%] md:top-[12%] md:w-[74vw] md:h-[68vh]">
-      <div className="md:w-3/4 lg:w-2/3 2xl:w-1/2 mx-auto">
+    <div className="p-4 pt-10 md:pt-0 mb-8 md:absolute md:left-[10%] md:top-[12%] md:w-[74vw] md:h-[68vh]">
+      <div className=" mx-auto">
         <div className="bg-[#072637] bg-opacity-50 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] p-4 flex flex-col sm:flex-row items-center gap-2">
           <img src={iconBridge} alt="" />
           {/* <button
@@ -197,14 +197,33 @@ const Bridge = ({ account }) => {
             >
               CLICK
             </button> */}
+
           <div className="text-sm font-raleway font-semibold tracking-[1px] px-2">
             <div className="text-[#FFD900]">
-              WenLamboNFTs and $HVILLE are migrating from Harmony to the
-              Avalanche Network.
+              Grantsville Super Cars are migrating from Harmony to the Avalanche
+              Network.
             </div>
             <div className="text-white mt-2">
-              Please bridge your NFTs and $HVILLE from Harmony to Avalanche. You
-              should be on the Harmony network to bridge your NFTs to Avalanche.
+              Please bridge your NFTs from Harmony to Avalanche. You should be
+              on the Harmony network to bridge your NFTs to Avalanche.
+            </div>
+            <div className="text-white mt-2">
+              Please be patient with the bridge, there will be high volumes of
+              traffic at times. Rest assured, your NFTs are in the queue and are
+              safe. You may hit the REFRESH button below to see if your Super
+              Cars have arrived in Avalanche.
+            </div>
+            <div className="text-white mt-2">
+              You may also check the status of your assets{" "}
+              <a
+                href="https://testnet.snowtrace.io/token/0xddfee5d523708799FcDd63B736bb95aE9546bF68#balances"
+                className="underline text-[#FFD900]"
+                target="_blank"
+                rel="noreferrer"
+              >
+                here
+              </a>{" "}
+              and look for the last 5 digits of your wallet to find your queue.
             </div>
           </div>
         </div>
@@ -230,7 +249,7 @@ const Bridge = ({ account }) => {
             </div>
           )}
         </div>
-        <div className="relative bg-[#072637] bg-opacity-70 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] max-h-[45vh]">
+        <div className="relative bg-[#072637] bg-opacity-70 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] max-h-[35vh] lg:max-h-[40vh]">
           <img
             src={iconHarmony}
             alt="harmony"
@@ -275,7 +294,7 @@ const Bridge = ({ account }) => {
                   </div>
                 </div> */}
               </div>
-              <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[25vh] xl:max-h-[30vh] overflow-y-auto">
+              <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[15vh] lg:max-h-[20vh] overflow-y-auto">
                 {wenlamboIds.map((id) => (
                   <div className="relative" key={id}>
                     <img
@@ -305,7 +324,7 @@ const Bridge = ({ account }) => {
             </div>
           )}
         </div>
-        <div className="relative bg-[#072637] bg-opacity-70 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] max-h-[45vh]">
+        <div className="relative bg-[#072637] bg-opacity-70 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] max-h-[35vh] lg:max-h-[40vh]">
           <img
             src={iconAvax}
             alt="avax"
@@ -374,7 +393,7 @@ const Bridge = ({ account }) => {
                       </div>
                     </div>
                   ) : (
-                    <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[25vh] xl:max-h-[30vh] overflow-y-auto">
+                    <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[15vh] lg:max-h-[20vh] xl:max-h-[30vh] overflow-y-auto">
                       {avaxLamboIds.map((id) => (
                         <div className="relative" key={id}>
                           <img
