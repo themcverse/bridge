@@ -217,7 +217,7 @@ const Bridge = ({ account }) => {
             <div className="text-white mt-2">
               You may also check the status of your assets{" "}
               <a
-                href="https://testnet.snowtrace.io/token/0xddfee5d523708799FcDd63B736bb95aE9546bF68#balances"
+                href="https://snowtrace.io/token/0xdAE165a6D46259E9b76882d19e9a2c90F99E2710#balances"
                 className="underline text-[#FFD900]"
                 target="_blank"
                 rel="noreferrer"
