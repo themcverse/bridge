@@ -170,8 +170,9 @@ const Bridge = ({ account }) => {
     );
 
     const avaxProvider = new ethers.providers.JsonRpcProvider(
-      "https://api.avax-test.network/ext/bc/C/rpc"
+      "https://api.avax.network/ext/bc/C/rpc"
     );
+    // "https://api.avax-test.network/ext/bc/C/rpc"
     const avaxContract = new ethers.Contract(
       avaxLamboAddress,
       wenlamboABI,

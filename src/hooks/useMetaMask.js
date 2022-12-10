@@ -21,7 +21,7 @@ export const useMetaMask = () => {
           method: "net_version",
         });
         console.log("networkId:", networkId);
-        if (networkId === "1666900000") {
+        if (networkId === "1666600000") {
           //avax:: testnet:43113  mainnet:43114
           //harmony:: testnet:1666700000  mainnet:1666600000  devnet:1666900000
 
@@ -42,7 +42,7 @@ export const useMetaMask = () => {
           try {
             await window.ethereum.request({
               method: "wallet_switchEthereumChain",
-              params: [{ chainId: devnet.chainId }], // testnet // mainnet
+              params: [{ chainId: mainnet.chainId }], // testnet // mainnet
             });
           } catch (error) {
             if (error.code === 4902) {
@@ -51,15 +51,15 @@ export const useMetaMask = () => {
                   method: "wallet_addEthereumChain",
                   params: [
                     {
-                      chainId: devnet.chainId,
-                      chainName: devnet.name,
+                      chainId: mainnet.chainId,
+                      chainName: mainnet.name,
                       nativeCurrency: {
                         name: "ONE",
                         symbol: "ONE",
                         decimals: 18,
                       },
-                      rpcUrls: [devnet.rpcAddress],
-                      blockExplorerUrls: [devnet.explorerUrl],
+                      rpcUrls: [mainnet.rpcAddress],
+                      blockExplorerUrls: [mainnet.explorerUrl],
                     },
                   ],
                 });
@@ -91,7 +91,7 @@ export const useMetaMask = () => {
         const accounts = await ethereum.request({ method: "eth_accounts" });
         if (accounts.length > 0) {
           const networkId = await ethereum.request({ method: "net_version" });
-          if (networkId === "1666900000") {
+          if (networkId === "1666600000") {
             //testnet:43113  mainnet:43114
             //testnet:1666700000  mainnet:1666600000  devnet:1666900000
             setAccount(accounts[0]);

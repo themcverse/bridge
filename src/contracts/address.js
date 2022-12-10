@@ -1,7 +1,7 @@
-const bridgeAddress = "0xC655585e9Fe09028E622F91CC135CB9d8449F181";
-const wenlamboAddress = "0x976cEeE0d525780115E37325FD0CC3b8347b8fF1";
-const wenlamboGarageAddress = "0x5587a670e1f7072c4cfD31AC8b226473F7Ea0917";
-const avaxLamboAddress = "0xddfee5d523708799FcDd63B736bb95aE9546bF68";
+const bridgeAddress = "0x5f5Eb8B4103c4B52FA3329555e4583d17B5B0d6b";
+const wenlamboAddress = "0x728523C45fab916C4a4b3B8ba60e631555f89E9E";
+const wenlamboGarageAddress = "0x685d42fE7dB41431019bCff7E70AecD9Af90Fe12";
+const avaxLamboAddress = "0x66F703e48F68C03FFFEE0eAee7BE2fE411cB3713";
 
 export {
   bridgeAddress,
