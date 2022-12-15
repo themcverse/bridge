@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { PulseLoader } from "react-spinners";
+import axios from "axios";
 
 import "./Bridge.css";
 import iconBridge from "../../assets/svg/grantsville/bridge-main-icon.svg";
 import logoLambo from "../../assets/image/logo-wenlambo.png";
-// import iconGville from "../../assets/svg/grantsville/icon-gville.svg";
-// import iconLockedHville from "../../assets/svg/grantsville/icon-locked-hville.svg";
 import iconHarmony from "../../assets/svg/icon-harmony.svg";
 import iconAvax from "../../assets/svg/icon-avax.svg";
 import iconBridging from "../../assets/svg/icon-bridging.svg";
@@ -16,27 +15,30 @@ import imgLamboIdBg from "../../assets/svg/grantsville/wenlambo-id-container.svg
 import {
   bridgeAddress,
   wenlamboAddress,
-  wenlamboGarageAddress,
+  multiCallAddress,
   avaxLamboAddress,
+  avaxBridgeAddress,
+  avaxMultiCallAddress,
 } from "../../contracts/address";
 import bridgeABI from "../../contracts/abis/Bridge.json";
 import wenlamboABI from "../../contracts/abis/Wenlambo/Wenlambo.json";
-import wenlamboGarageABI from "../../contracts/abis/Wenlambo/Garage.json";
+import multiCallABI from "../../contracts/abis/MultiCall.json";
 
 const Bridge = ({ account }) => {
   const [isBridging, setIsBridging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [bridgeContract, setBridgeContract] = useState(null);
   const [wenlamboContract, setWenlamboContract] = useState(null);
-  const [wenlamboGarageContract, setWenlamboGarageContract] = useState(null);
+  const [multiCallContract, setMultiCallContract] = useState(null);
   const [wenlamboIds, setWenlamboIds] = useState([]);
-  // const [lockedHville, setLockedHville] = useState(0);
-  // const [unlockedHville, setUnlockedHville] = useState(0);
 
   const [avaxContract, setAvaxContract] = useState(null);
+  const [avaxBridgeContract, setAvaxBridgeContract] = useState(null);
+  const [avaxMultiCallContract, setAvaxMultiCallContract] = useState(null);
   const [avaxLamboIds, setAvaxLamboIds] = useState([]);
-  // const [avaxLockedHville, setAvaxLockedHville] = useState(0);
+  const [idsForRetransfer, setIdsForRetransfer] = useState([]);
 
   const handleBridgeAll = async () => {
     try {
@@ -46,7 +48,7 @@ const Bridge = ({ account }) => {
         account,
         bridgeAddress
       );
-      console.log(isApproved);
+      // console.log(isApproved);
       if (!isApproved) {
         const txApproval = await wenlamboContract.setApprovalForAll(
           bridgeAddress,
@@ -61,36 +63,28 @@ const Bridge = ({ account }) => {
           ["avax", account],
         ]);
         const tx = await bridgeContract.queue(queue);
-        console.log(tx);
-        const result = await tx.wait();
-        console.log(result);
+        // console.log(tx);
+        await tx.wait();
+        // console.log(result);
       } else {
         const queue = wenlamboIds.map((id) => [
           [wenlamboAddress, id],
           ["avax", account],
         ]);
         const tx = await bridgeContract.queue(queue);
-        console.log(tx);
-        const result = await tx.wait();
-        console.log(result);
+        // console.log(tx);
+        await tx.wait();
+        // console.log(result);
       }
-      // const queue = wenlamboIds.map((id) => [
-      //   [wenlamboAddress, id],
-      //   ["fuji", account],
-      // ]);
-      // const tx = await bridgeContract.queue(queue);
-      // const tx = await bridgeContract.queue([
-      //   [
-      //     [wenlamboAddress, wenlamboIds[0]],
-      //     ["fuji", account],
-      //   ],
-      //   [
-      //     [wenlamboAddress, wenlamboIds[1]],
-      //     ["fuji", account],
-      //   ],
-      // ]);
 
-      getWenlamboAssets(wenlamboContract, avaxContract);
+      getWenlamboAssets(
+        wenlamboContract,
+        avaxContract,
+        bridgeContract,
+        avaxBridgeContract,
+        multiCallContract,
+        avaxMultiCallContract
+      );
       setIsBridging(false);
     } catch (error) {
       setIsBridging(false);
@@ -98,7 +92,14 @@ const Bridge = ({ account }) => {
     }
   };
 
-  const getWenlamboAssets = async (wenlamboContract, avaxContract) => {
+  const getWenlamboAssets = async (
+    wenlamboContract,
+    avaxContract,
+    bridgeContract,
+    avaxBridgeContract,
+    multiCallContract,
+    avaxMultiCallContract
+  ) => {
     try {
       setIsLoading(true);
       const ids = await wenlamboContract.tokensOfOwner(account);
@@ -107,45 +108,111 @@ const Bridge = ({ account }) => {
       const avaxIds = await avaxContract.tokensOfOwner(account);
       const myAvaxIds = avaxIds.map((id) => id.toString());
       setAvaxLamboIds(myAvaxIds);
+      console.log("lambos\n", myIds);
+      console.log("super cars\n", myAvaxIds);
+
+      const historyLength = await bridgeContract.personalHistoryLength(account);
+      // console.error(historyLength);
+      const history = historyLength.toString();
+      // console.log(history);
+
+      const inputGetHistoryIds = [...Array(+history)].map((_, index) => ({
+        target: bridgeContract.address,
+        callData: bridgeContract.interface.encodeFunctionData(
+          "personalHistory",
+          [account, index]
+        ),
+      }));
+      const txGetHistoryIds = await multiCallContract.aggregate(
+        inputGetHistoryIds
+      );
+      const dataHistoryIds = txGetHistoryIds.returnData.map(
+        (returnData, index) =>
+          bridgeContract.interface.decodeFunctionResult(
+            "personalHistory",
+            returnData
+          )[0]
+      );
+      // console.log(dataHistoryIds);
+
+      const inputGetCompletions = dataHistoryIds.map((id) => ({
+        target: avaxBridgeContract.address,
+        callData: avaxBridgeContract.interface.encodeFunctionData(
+          "externalCompletions",
+          [id]
+        ),
+      }));
+      const txGetCompletions = await avaxMultiCallContract.aggregate(
+        inputGetCompletions
+      );
+      const dataCompletions = txGetCompletions.returnData.map(
+        (returnData, index) =>
+          avaxBridgeContract.interface.decodeFunctionResult(
+            "externalCompletions",
+            returnData
+          )[0]
+      );
+      console.log(dataCompletions);
+      const failedHistoryIds = dataCompletions
+        .map((each, index) => (each === false ? dataHistoryIds[index] : null))
+        .filter((each) => each !== null);
+
+      if (failedHistoryIds.length > 0) {
+        console.log("Failed lambo bridging ids:\n", failedHistoryIds);
+        setIdsForRetransfer(failedHistoryIds);
+      } else {
+        console.log("Nothing to bridge again");
+      }
+
       setIsLoading(false);
-      // const attributes = await wenlamboGarageContract.getTokenAttributesMany(
-      //   myIds
-      // );
-      // console.log(attributes);
-      // const lockedHville =
-      //   await wenlamboGarageContract.getTotalLockedForAddress(account);
-      // console.log(lockedHville);
-      // const totalUnlocked = attributes.reduce(
-      //   (acc, each) =>
-      //     acc + parseFloat(ethers.utils.formatUnits(each["unlocked"], 18)),
-      //   0
-      // );
-      // console.log(totalUnlocked);
-      // setLockedHville(ethers.utils.formatUnits(lockedHville[0], 18));
-      // setUnlockedHville(totalUnlocked);
     } catch (error) {
       setIsLoading(false);
+      toast.error(
+        "Something went wrong! Please refresh your browser and try again."
+      );
       console.log(error);
     }
   };
 
-  // const test = async () => {
-  //   try {
-  //     const rrr = await bridgeContract.historyLength();
-  //     console.log("---- test ----\n", rrr, rrr.toString());
-  //     const chain = await bridgeContract.chain();
-  //     console.log("chain:", chain);
+  const handleRefresh = async () => {
+    if (idsForRetransfer.length === 0) {
+      toast.info("No Lambos to transfer again!");
+      return;
+    }
+    if (isRefreshing) {
+      toast.info(
+        "Your have already sent request. Please try again 1 min later!"
+      );
+      return;
+    }
+    setIsRefreshing(true);
+    axios
+      .all(
+        idsForRetransfer.map((id) =>
+          axios.post(`https://bridgeserver.mcverse.app/queueRequest`, {
+            sourceChain: "harmony",
+            id,
+          })
+        )
+      )
+      .then(
+        setTimeout(() => {
+          getWenlamboAssets(
+            wenlamboContract,
+            avaxContract,
+            bridgeContract,
+            avaxBridgeContract,
+            multiCallContract,
+            avaxMultiCallContract
+          );
+          toast.success("Request sent successfully!");
+        }, 5000)
+      );
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 60000);
+  };
 
-  //     console.log("account: ", account);
-  //     const ids = await wenlamboContract.tokensOfOwner(account);
-  //     console.log(
-  //       "lambo - ids: ",
-  //       ids.map((id) => id.toString())
-  //     );
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
   useEffect(() => {
     const { ethereum } = window;
     const provider = new ethers.providers.Web3Provider(ethereum);
@@ -155,36 +222,52 @@ const Bridge = ({ account }) => {
       bridgeABI,
       signer
     );
-    // const harmonyProvider = new ethers.providers.JsonRpcProvider(
-    //   "https://api.s0.ps.hmny.io"
-    // );
     const wenlamboContract = new ethers.Contract(
       wenlamboAddress,
       wenlamboABI,
       signer
     );
-    const wenlamboGarageContract = new ethers.Contract(
-      wenlamboGarageAddress,
-      wenlamboGarageABI,
+    const multiCallContract = new ethers.Contract(
+      multiCallAddress,
+      multiCallABI,
       signer
     );
 
     const avaxProvider = new ethers.providers.JsonRpcProvider(
       "https://api.avax.network/ext/bc/C/rpc"
     );
-    // "https://api.avax-test.network/ext/bc/C/rpc"
+    // Avax mainnet: "https://api.avax.network/ext/bc/C/rpc"
+    // Avax testnet: "https://api.avax-test.network/ext/bc/C/rpc"
     const avaxContract = new ethers.Contract(
       avaxLamboAddress,
       wenlamboABI,
       avaxProvider
     );
-
+    const avaxBridgeContract = new ethers.Contract(
+      avaxBridgeAddress,
+      bridgeABI,
+      avaxProvider
+    );
+    const avaxMultiCallContract = new ethers.Contract(
+      avaxMultiCallAddress,
+      multiCallABI,
+      avaxProvider
+    );
     setBridgeContract(bridgeContract);
     setWenlamboContract(wenlamboContract);
-    setWenlamboGarageContract(wenlamboGarageContract);
     setAvaxContract(avaxContract);
+    setAvaxBridgeContract(avaxBridgeContract);
+    setMultiCallContract(multiCallContract);
+    setAvaxMultiCallContract(avaxMultiCallContract);
 
-    getWenlamboAssets(wenlamboContract, avaxContract);
+    getWenlamboAssets(
+      wenlamboContract,
+      avaxContract,
+      bridgeContract,
+      avaxBridgeContract,
+      multiCallContract,
+      avaxMultiCallContract
+    );
   }, []);
 
   return (
@@ -192,12 +275,6 @@ const Bridge = ({ account }) => {
       <div className=" mx-auto">
         <div className="bg-[#072637] bg-opacity-50 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] p-4 flex flex-col sm:flex-row items-center gap-2">
           <img src={iconBridge} alt="" />
-          {/* <button
-              className="text-white border border-white bg-cyan-600"
-              onClick={() => test()}
-            >
-              CLICK
-            </button> */}
 
           <div className="text-sm font-raleway font-semibold tracking-[1px] px-2">
             <div className="text-[#FFD900]">
@@ -256,14 +333,6 @@ const Bridge = ({ account }) => {
             alt="harmony"
             className="absolute left-0 top-1/2 sm:left-1/2 sm:top-0 -translate-x-1/2 -translate-y-1/2"
           />
-          {/* {asset === "" && (
-            <div className="font-raleway text-sm font-semibold tracking-[1px] text-center max-w-xs">
-              <div className="text-[#87C5E4]">
-                THERE ARE NO ASSETS IN YOUR HARMONY WALLET
-              </div>
-              <div className="text-[#FFD900] mt-4">NO ACTION REQUIRED</div>
-            </div>
-          )} */}
           {wenlamboIds.length === 0 ? (
             <div className="flex items-center justify-center h-full ">
               <div className="font-raleway text-sm font-semibold tracking-[1px] text-center max-w-xs">
@@ -285,15 +354,6 @@ const Bridge = ({ account }) => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="flex items-center gap-2">
-                  <img src={iconLockedHville} alt="hville" />
-                  <div className="font-raleway text-white">
-                    <div className="text-xs tracking-widest">LOCKED HVILLE</div>
-                    <div className="text-[#0986C7] text-lg font-bold">
-                      {(+lockedHville).toLocaleString()}
-                    </div>
-                  </div>
-                </div> */}
               </div>
               <div className="grid md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-6 max-h-[15vh] lg:max-h-[20vh] overflow-y-auto">
                 {wenlamboIds.map((id) => (
@@ -367,24 +427,11 @@ const Bridge = ({ account }) => {
                     ) : (
                       <div
                         className="px-2 py-1 border border-[#FDBC00] hover:bg-yellow-900 text-[#FDBC00] rounded-tr-xl tracking-[1px] uppercase cursor-pointer"
-                        onClick={() =>
-                          getWenlamboAssets(wenlamboContract, avaxContract)
-                        }
+                        onClick={() => handleRefresh()}
                       >
                         refresh
                       </div>
                     )}
-                    {/* <div className="flex items-center gap-2">
-                      <img src={iconLockedHville} alt="hville" />
-                      <div className="font-raleway text-white">
-                        <div className="text-xs tracking-widest">
-                          LOCKED HVILLE
-                        </div>
-                        <div className="text-[#0986C7] text-lg font-bold">
-                          {(+avaxLockedHville).toLocaleString()}
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
                   {isLoading ? (
                     <div className="flex items-center justify-center h-20">
