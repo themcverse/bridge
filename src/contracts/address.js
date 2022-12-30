@@ -5,6 +5,8 @@ const multiCallAddress = "0x51eF54CEA39A0342Bd63ac49E09eBC0833A2cc39";
 const avaxLamboAddress = "0xdAE165a6D46259E9b76882d19e9a2c90F99E2710";
 const avaxBridgeAddress = "0xB85f2052B5C23C43a17166759AC1606F92cF0f68";
 const avaxMultiCallAddress = "0xdAeD0D9355156fA4EAEb440eDeDc953f28e9e7BE";
+const wenlamboBadgeAddress = "0x1A81e5ed7d49b3cceD7ECA400261E0eC98C308bf";
+const avaxBadgeAddress = "0x0a7137De48e650AE7Fd339Bd0Af039238537c7C0";
 // testnet
 // const bridgeAddress = "0xC655585e9Fe09028E622F91CC135CB9d8449F181";
 // const wenlamboAddress = "0x976cEeE0d525780115E37325FD0CC3b8347b8fF1";
@@ -22,4 +24,6 @@ export {
   avaxLamboAddress,
   avaxBridgeAddress,
   avaxMultiCallAddress,
+  wenlamboBadgeAddress,
+  avaxBadgeAddress,
 };

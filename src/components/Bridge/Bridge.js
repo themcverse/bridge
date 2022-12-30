@@ -19,10 +19,13 @@ import {
   avaxLamboAddress,
   avaxBridgeAddress,
   avaxMultiCallAddress,
+  wenlamboBadgeAddress,
+  avaxBadgeAddress,
 } from "../../contracts/address";
 import bridgeABI from "../../contracts/abis/Bridge.json";
 import wenlamboABI from "../../contracts/abis/Wenlambo/Wenlambo.json";
 import multiCallABI from "../../contracts/abis/MultiCall.json";
+import badgeABI from "../../contracts/abis/Badge.json";
 
 const Bridge = ({ account }) => {
   const [isBridging, setIsBridging] = useState(false);
@@ -33,11 +36,16 @@ const Bridge = ({ account }) => {
   const [wenlamboContract, setWenlamboContract] = useState(null);
   const [multiCallContract, setMultiCallContract] = useState(null);
   const [wenlamboIds, setWenlamboIds] = useState([]);
+  const [badgeContract, setBadgeContract] = useState(null);
+  const [badgeIds, setBadgeIds] = useState([]);
 
   const [avaxContract, setAvaxContract] = useState(null);
   const [avaxBridgeContract, setAvaxBridgeContract] = useState(null);
   const [avaxMultiCallContract, setAvaxMultiCallContract] = useState(null);
   const [avaxLamboIds, setAvaxLamboIds] = useState([]);
+  const [avaxBadgeContract, setAvaxBadgeContract] = useState(null);
+  const [avaxBadgeIds, setAvaxBadgeIds] = useState([]);
+
   const [idsForRetransfer, setIdsForRetransfer] = useState([]);
 
   const handleBridgeAll = async () => {
@@ -76,6 +84,26 @@ const Bridge = ({ account }) => {
         await tx.wait();
         // console.log(result);
       }
+      // Badge bridge
+      const isBadgeApproved = await badgeContract.isApprovedForAll(
+        account,
+        bridgeAddress
+      );
+      // console.log(isApproved);
+      if (!isBadgeApproved) {
+        const txApproval = await badgeContract.setApprovalForAll(
+          bridgeAddress,
+          true
+        );
+        await txApproval.wait();
+      }
+      const queue = badgeIds.map((id) => [
+        [wenlamboBadgeAddress, id],
+        ["avax", account],
+      ]);
+      const tx = await bridgeContract.queue(queue);
+      // console.log(tx);
+      await tx.wait();
 
       getWenlamboAssets(
         wenlamboContract,
@@ -83,7 +111,9 @@ const Bridge = ({ account }) => {
         bridgeContract,
         avaxBridgeContract,
         multiCallContract,
-        avaxMultiCallContract
+        avaxMultiCallContract,
+        badgeContract,
+        avaxBadgeContract
       );
       setIsBridging(false);
     } catch (error) {
@@ -98,7 +128,9 @@ const Bridge = ({ account }) => {
     bridgeContract,
     avaxBridgeContract,
     multiCallContract,
-    avaxMultiCallContract
+    avaxMultiCallContract,
+    badgeContract,
+    avaxBadgeContract
   ) => {
     try {
       setIsLoading(true);
@@ -110,7 +142,43 @@ const Bridge = ({ account }) => {
       setAvaxLamboIds(myAvaxIds);
       console.log("lambos\n", myIds);
       console.log("super cars\n", myAvaxIds);
+      const numOfBadgeIds = await badgeContract.balanceOf(account);
+      // const myBadgeIds = badgeIds.map((id) => id.toString());
+      // setBadgeIds(badgeIds);
+      const numOfAvaxBadgeIds = await avaxBadgeContract.balanceOf(account);
+      // const myAvaxBadgeIds = avaxBadgeIds.map((id) => id.toString());
+      // setAvaxBadgeIds(avaxBadgeIds);
+      console.log(
+        "badge counts:\n",
+        numOfBadgeIds.toString(),
+        numOfAvaxBadgeIds.toString()
+      );
+      // const id = await badgeContract.tokenOfOwnerByIndex(account, 0);
+      // console.log("badge id:", id.toString());
 
+      // Get Badge Ids
+      const inputGetBadgeIds = [...Array(+numOfBadgeIds.toString())].map(
+        (_, index) => ({
+          target: badgeContract.address,
+          callData: badgeContract.interface.encodeFunctionData(
+            "tokenOfOwnerByIndex",
+            [account, index]
+          ),
+        })
+      );
+      const txGetBadgeIds = await multiCallContract.aggregate(inputGetBadgeIds);
+      const dataBadgeIds = txGetBadgeIds.returnData.map(
+        (returnData, index) =>
+          badgeContract.interface.decodeFunctionResult(
+            "tokenOfOwnerByIndex",
+            returnData
+          )[0]
+      );
+      const badgeIds = dataBadgeIds.map((id) => id.toString());
+      console.log("badgeids", badgeIds);
+      setBadgeIds(badgeIds);
+
+      // For History Refresh
       const historyLength = await bridgeContract.personalHistoryLength(account);
       // console.error(historyLength);
       const history = historyLength.toString();
@@ -232,6 +300,11 @@ const Bridge = ({ account }) => {
       multiCallABI,
       signer
     );
+    const badgeContract = new ethers.Contract(
+      wenlamboBadgeAddress,
+      badgeABI,
+      signer
+    );
 
     const avaxProvider = new ethers.providers.JsonRpcProvider(
       "https://api.avax.network/ext/bc/C/rpc"
@@ -253,12 +326,20 @@ const Bridge = ({ account }) => {
       multiCallABI,
       avaxProvider
     );
+    const avaxBadgeContract = new ethers.Contract(
+      avaxBadgeAddress,
+      badgeABI,
+      avaxProvider
+    );
+
     setBridgeContract(bridgeContract);
     setWenlamboContract(wenlamboContract);
     setAvaxContract(avaxContract);
     setAvaxBridgeContract(avaxBridgeContract);
     setMultiCallContract(multiCallContract);
     setAvaxMultiCallContract(avaxMultiCallContract);
+    setBadgeContract(badgeContract);
+    setAvaxBadgeContract(avaxBadgeContract);
 
     getWenlamboAssets(
       wenlamboContract,
@@ -266,7 +347,9 @@ const Bridge = ({ account }) => {
       bridgeContract,
       avaxBridgeContract,
       multiCallContract,
-      avaxMultiCallContract
+      avaxMultiCallContract,
+      badgeContract,
+      avaxBadgeContract
     );
   }, []);
 
