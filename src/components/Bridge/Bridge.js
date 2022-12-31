@@ -11,6 +11,7 @@ import iconHarmony from "../../assets/svg/icon-harmony.svg";
 import iconAvax from "../../assets/svg/icon-avax.svg";
 import iconBridging from "../../assets/svg/icon-bridging.svg";
 import imgLamboIdBg from "../../assets/svg/grantsville/wenlambo-id-container.svg";
+import imgBadge from "../../assets/image/wenlambonft-og-badge.jpg";
 
 import {
   bridgeAddress,
@@ -147,7 +148,7 @@ const Bridge = ({ account }) => {
       // setBadgeIds(badgeIds);
       const numOfAvaxBadgeIds = await avaxBadgeContract.balanceOf(account);
       // const myAvaxBadgeIds = avaxBadgeIds.map((id) => id.toString());
-      // setAvaxBadgeIds(avaxBadgeIds);
+      setAvaxBadgeIds(numOfAvaxBadgeIds.toString());
       console.log(
         "badge counts:\n",
         numOfBadgeIds.toString(),
@@ -416,7 +417,7 @@ const Bridge = ({ account }) => {
             alt="harmony"
             className="absolute left-0 top-1/2 sm:left-1/2 sm:top-0 -translate-x-1/2 -translate-y-1/2"
           />
-          {wenlamboIds.length === 0 ? (
+          {+wenlamboIds.length + +badgeIds.length === 0 ? (
             <div className="flex items-center justify-center h-full ">
               <div className="font-raleway text-sm font-semibold tracking-[1px] text-center max-w-xs">
                 <div className="text-[#87C5E4]">
@@ -434,6 +435,15 @@ const Bridge = ({ account }) => {
                     <div className="text-xs tracking-widest">WENLAMBONFT</div>
                     <div className="text-[#FDBC00] text-lg font-bold">
                       {wenlamboIds.length}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <img src={imgBadge} alt="lambo" className="w-11" />
+                  <div className="font-raleway text-white">
+                    <div className="text-xs tracking-widest">BADGE</div>
+                    <div className="text-[#FDBC00] text-lg font-bold">
+                      {badgeIds.length}
                     </div>
                   </div>
                 </div>
@@ -500,6 +510,15 @@ const Bridge = ({ account }) => {
                         </div>
                         <div className="text-[#FDBC00] text-lg font-bold">
                           {avaxLamboIds.length}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src={imgBadge} alt="lambo" className="w-11" />
+                      <div className="font-raleway text-white">
+                        <div className="text-xs tracking-widest">BADGE</div>
+                        <div className="text-[#FDBC00] text-lg font-bold">
+                          {avaxBadgeIds}
                         </div>
                       </div>
                     </div>
