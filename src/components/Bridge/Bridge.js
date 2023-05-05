@@ -244,20 +244,68 @@ const Bridge = ({ account }) => {
   };
 
   const handleRefresh = async () => {
-    if (idsForRetransfer.length === 0) {
-      toast.info("No Lambos to transfer again!");
-      return;
-    }
     if (isRefreshing) {
       toast.info(
         "Your have already sent request. Please try again 1 min later!"
       );
       return;
     }
+    let ids = [];
+    if (idsForRetransfer.length === 0) {
+      const historyLength = await bridgeContract.personalHistoryLength(account);
+      const history = historyLength.toString();
+
+      const inputGetHistoryIds = [...Array(+history)].map((_, index) => ({
+        target: bridgeContract.address,
+        callData: bridgeContract.interface.encodeFunctionData(
+          "personalHistory",
+          [account, index]
+        ),
+      }));
+      const txGetHistoryIds = await multiCallContract.aggregate(
+        inputGetHistoryIds
+      );
+      const dataHistoryIds = txGetHistoryIds.returnData.map(
+        (returnData, index) =>
+          bridgeContract.interface.decodeFunctionResult(
+            "personalHistory",
+            returnData
+          )[0]
+      );
+
+      const inputGetCompletions = dataHistoryIds.map((id) => ({
+        target: avaxBridgeContract.address,
+        callData: avaxBridgeContract.interface.encodeFunctionData(
+          "externalCompletions",
+          [id]
+        ),
+      }));
+      const txGetCompletions = await avaxMultiCallContract.aggregate(
+        inputGetCompletions
+      );
+      const dataCompletions = txGetCompletions.returnData.map(
+        (returnData, index) =>
+          avaxBridgeContract.interface.decodeFunctionResult(
+            "externalCompletions",
+            returnData
+          )[0]
+      );
+      console.log(dataCompletions);
+      const failedHistoryIds = dataCompletions
+        .map((each, index) => (each === false ? dataHistoryIds[index] : null))
+        .filter((each) => each !== null);
+      if (failedHistoryIds.length === 0) {
+        toast.info("No Lambos to transfer again!");
+        return;
+      } else {
+        ids = failedHistoryIds;
+      }
+    }
+
     setIsRefreshing(true);
     axios
       .all(
-        idsForRetransfer.map((id) =>
+        ids.map((id) =>
           axios.post(`https://bridgeserver.mcverse.app/queueRequest`, {
             sourceChain: "harmony",
             id,
@@ -356,7 +404,7 @@ const Bridge = ({ account }) => {
 
   return (
     <div className="p-4 pt-10 md:pt-0 mb-8 md:absolute md:left-[10%] md:top-[12%] md:w-[74vw] md:h-[68vh]">
-      <div className=" mx-auto">
+      <div className="mx-auto ">
         <div className="bg-[#072637] bg-opacity-50 border border-[rgba(77,201,255,0.68)] shadow-[0_0_4px_#419BD5] rounded-[10px] p-4 flex flex-col sm:flex-row items-center gap-2">
           <img src={iconBridge} alt="" />
 
@@ -365,17 +413,17 @@ const Bridge = ({ account }) => {
               Grantsville Super Cars are migrating from Harmony to the Avalanche
               Network.
             </div>
-            <div className="text-white mt-2">
+            <div className="mt-2 text-white">
               Please bridge your NFTs from Harmony to Avalanche. You should be
               on the Harmony network to bridge your NFTs to Avalanche.
             </div>
-            <div className="text-white mt-2">
+            <div className="mt-2 text-white">
               Please be patient with the bridge, there will be high volumes of
               traffic at times. Rest assured, your NFTs are in the queue and are
               safe. You may hit the REFRESH button below to see if your Super
               Cars have arrived in Avalanche.
             </div>
-            <div className="text-white mt-2">
+            <div className="mt-2 text-white">
               You may also check the status of your assets{" "}
               <a
                 href="https://snowtrace.io/token/0xdAE165a6D46259E9b76882d19e9a2c90F99E2710#balances"
@@ -391,7 +439,7 @@ const Bridge = ({ account }) => {
         </div>
       </div>
       <div className="relative mt-14 ml-10 sm:ml-0 grid sm:grid-cols-2 gap-20 min-h-[45vh]">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-36 h-36 z-10 text-center">
+        <div className="absolute z-10 text-center -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-36 h-36">
           {isBridging ? (
             <>
               <img src={iconBridging} alt="bridging" className="relative" />
@@ -415,7 +463,7 @@ const Bridge = ({ account }) => {
           <img
             src={iconHarmony}
             alt="harmony"
-            className="absolute left-0 top-1/2 sm:left-1/2 sm:top-0 -translate-x-1/2 -translate-y-1/2"
+            className="absolute left-0 -translate-x-1/2 -translate-y-1/2 top-1/2 sm:left-1/2 sm:top-0"
           />
           {+wenlamboIds.length + +badgeIds.length === 0 ? (
             <div className="flex items-center justify-center h-full ">
@@ -431,7 +479,7 @@ const Bridge = ({ account }) => {
               <div className="flex flex-wrap items-center gap-4">
                 <div className="flex items-center gap-2">
                   <img src={logoLambo} alt="lambo" className="w-11" />
-                  <div className="font-raleway text-white">
+                  <div className="text-white font-raleway">
                     <div className="text-xs tracking-widest">WENLAMBONFT</div>
                     <div className="text-[#FDBC00] text-lg font-bold">
                       {wenlamboIds.length}
@@ -440,7 +488,7 @@ const Bridge = ({ account }) => {
                 </div>
                 <div className="flex items-center gap-2">
                   <img src={imgBadge} alt="lambo" className="w-11" />
-                  <div className="font-raleway text-white">
+                  <div className="text-white font-raleway">
                     <div className="text-xs tracking-widest">BADGE</div>
                     <div className="text-[#FDBC00] text-lg font-bold">
                       {badgeIds.length}
@@ -455,13 +503,13 @@ const Bridge = ({ account }) => {
                       src={`https://meta.wenlambo.one/images/${id}.png`}
                       alt="lambo"
                       loading="lazy"
-                      className="rounded-tl-3xl rounded-br-3xl border border-gray-500"
+                      className="border border-gray-500 rounded-tl-3xl rounded-br-3xl"
                     />
                     <img
                       src={imgLamboIdBg}
                       alt=""
                       loading="lazy"
-                      className="absolute bottom-0 left-1/2 -translate-x-1/2"
+                      className="absolute bottom-0 -translate-x-1/2 left-1/2"
                     />
                     <div className="absolute font-bold text-[8px] bottom-0 flex items-center justify-center w-full">
                       #{id}
@@ -482,7 +530,7 @@ const Bridge = ({ account }) => {
           <img
             src={iconAvax}
             alt="avax"
-            className="absolute left-0 top-1/2 sm:left-1/2 sm:top-0 -translate-x-1/2 -translate-y-1/2"
+            className="absolute left-0 -translate-x-1/2 -translate-y-1/2 top-1/2 sm:left-1/2 sm:top-0"
           />
           {isBridging ? (
             <div className="flex items-center justify-center h-full">
@@ -504,7 +552,7 @@ const Bridge = ({ account }) => {
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                       <img src={logoLambo} alt="lambo" className="w-11" />
-                      <div className="font-raleway text-white">
+                      <div className="text-white font-raleway">
                         <div className="text-xs tracking-widest">
                           WENLAMBONFT
                         </div>
@@ -515,7 +563,7 @@ const Bridge = ({ account }) => {
                     </div>
                     <div className="flex items-center gap-2">
                       <img src={imgBadge} alt="lambo" className="w-11" />
-                      <div className="font-raleway text-white">
+                      <div className="text-white font-raleway">
                         <div className="text-xs tracking-widest">BADGE</div>
                         <div className="text-[#FDBC00] text-lg font-bold">
                           {avaxBadgeIds}
@@ -550,13 +598,13 @@ const Bridge = ({ account }) => {
                             src={`https://meta.wenlambo.one/images/${id}.png`}
                             alt="lambo"
                             loading="lazy"
-                            className="rounded-tl-3xl rounded-br-3xl border border-gray-500"
+                            className="border border-gray-500 rounded-tl-3xl rounded-br-3xl"
                           />
                           <img
                             src={imgLamboIdBg}
                             alt=""
                             loading="lazy"
-                            className="absolute bottom-0 left-1/2 -translate-x-1/2"
+                            className="absolute bottom-0 -translate-x-1/2 left-1/2"
                           />
                           <div className="absolute font-bold text-[8px] bottom-0 flex items-center justify-center w-full">
                             #{id}
