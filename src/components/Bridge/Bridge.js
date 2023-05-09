@@ -500,28 +500,22 @@ const Bridge = ({ account }) => {
                 {wenlamboIds.map((id) => (
                   <div className="relative" key={id}>
                     <img
-                      src={`https://meta.wenlambo.one/images/${id}.png`}
+                      src={`https://mcverseapi.mcverse.one/images/supercars/${id}`}
                       alt="lambo"
                       loading="lazy"
-                      className="border border-gray-500 rounded-tl-3xl rounded-br-3xl"
+                      className="border border-gray-500 rounded-tl-xl rounded-br-xl"
                     />
                     <img
                       src={imgLamboIdBg}
                       alt=""
                       loading="lazy"
-                      className="absolute bottom-0 -translate-x-1/2 left-1/2"
+                      className="absolute bottom-[1px] -translate-x-1/2 left-1/2"
                     />
                     <div className="absolute font-bold text-[8px] bottom-0 flex items-center justify-center w-full">
                       #{id}
                     </div>
                   </div>
                 ))}
-                {/* <img src={imgLambo} alt="lambo" />
-                    <img src={imgLambo} alt="lambo" />
-                    <img src={imgLambo} alt="lambo" />
-                    <img src={imgLambo} alt="lambo" />
-                    <img src={imgLambo} alt="lambo" />
-                    <img src={imgLambo} alt="lambo" /> */}
               </div>
             </div>
           )}
@@ -595,16 +589,16 @@ const Bridge = ({ account }) => {
                       {avaxLamboIds.map((id) => (
                         <div className="relative" key={id}>
                           <img
-                            src={`https://meta.wenlambo.one/images/${id}.png`}
+                            src={`https://mcverseapi.mcverse.one/images/supercars/${id}`}
                             alt="lambo"
                             loading="lazy"
-                            className="border border-gray-500 rounded-tl-3xl rounded-br-3xl"
+                            className="border border-gray-500 rounded-tl-xl rounded-br-xl"
                           />
                           <img
                             src={imgLamboIdBg}
                             alt=""
                             loading="lazy"
-                            className="absolute bottom-0 -translate-x-1/2 left-1/2"
+                            className="absolute -translate-x-1/2 bottom-[1px] left-1/2"
                           />
                           <div className="absolute font-bold text-[8px] bottom-0 flex items-center justify-center w-full">
                             #{id}
@@ -623,6 +617,18 @@ const Bridge = ({ account }) => {
                     <div className="text-[#FF0000] mt-4">
                       MINT OR BRIDGE NOW TO SEE ASSETS
                     </div>
+                    {isLoading ? (
+                      <div className="px-2 py-1 border border-[#FDBC00] text-[#FDBC00] rounded-tr-xl tracking-[1px] uppercase cursor-not-allowed w-fit mx-auto">
+                        refresh
+                      </div>
+                    ) : (
+                      <div
+                        className="px-2 py-1 border border-[#FDBC00] hover:bg-yellow-900 text-[#FDBC00] rounded-tr-xl tracking-[1px] uppercase cursor-pointer w-fit mx-auto"
+                        onClick={() => handleRefresh()}
+                      >
+                        refresh
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
