@@ -320,7 +320,9 @@ const Bridge = ({ account }) => {
             bridgeContract,
             avaxBridgeContract,
             multiCallContract,
-            avaxMultiCallContract
+            avaxMultiCallContract,
+            badgeContract,
+            avaxBadgeContract
           );
           toast.success("Request sent successfully!");
         }, 5000)
